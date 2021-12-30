@@ -77,7 +77,7 @@ public class Atm {
 			
 			CreditCard creditCard = null;
 			
-			if(card.getClass().equals(CreditCard.class)) {
+			if(card.getClass().equals(CreditCard.class)) {		//needs better solution
 				creditCard = (CreditCard) card;
 				System.out.println("6. Pay Plafond");
 				System.out.println("7. Check Plafond Available");
@@ -96,7 +96,7 @@ public class Atm {
 					atmService.withdraw(account, card);
 					break;
 				case 3:
-					System.out.println("\nBalance: " + account.getBalance());
+					System.out.println("Balance: " + account.getBalance());
 					break;
 				case 4:
 					transfers(account, client);
@@ -115,6 +115,30 @@ public class Atm {
 				}
 		}while(choice != 0);
 	}
+	
+	public void transfers(Account account, Client client){
+		
+		int choice = 0;
+		
+		do {
+			System.out.println("0. Go Back");
+			System.out.println("1. Transfers between your Accounts");
+			System.out.println("2. Transfers to a diferent Account");
+			
+			choice = scan.nextInt();
+			
+			switch (choice) {
+			case 1:
+				transferBetweenAccounts(account, client);
+				break;
+			case 2:
+				transferToDiferentAccount(account, client);
+				break;
+			default:
+				break;
+			}
+		}while(choice != 0);
+	}
 
 	private void transactionsHistory(Account account) {
 		
@@ -123,48 +147,14 @@ public class Atm {
 		}
 	}
 	
-	public void transfers(Account account, Client client){
-
-		int choice = 0;
+	private void plafond(CreditCard creditCard, Account account, Client client) {
 		
-		do {
-			System.out.println("0. Go Back");
-			System.out.println("1. Transfers between your Accounts");
-			System.out.println("2. Transfers to a diferent Account");
-	
-			choice = scan.nextInt();
-	
-			switch (choice) {
-				case 1:
-					transferBetweenAccounts(account, client);
-					break;
-				case 2:
-					transferToDiferentAccount(account, client);
-					break;
-				default:
-					break;
-			}
-		}while(choice != 0);
-	}
-	
-	public void transferToDiferentAccount(Account account, Client client){
-
-		System.out.println("Type Account NIB number to transfer value");
-		String nib = scan.next();
-
-		Account receivingAccount = accountService.getByNib(nib);
-	
-		atmService.transfer(account, receivingAccount);
+		System.out.println("Type value to pay Plafond: ");
+		Double valueInputPlafond = scan.nextDouble();
+		atmService.payPlafond(account, creditCard, valueInputPlafond);
 	}
 	
 	public void transferBetweenAccounts(Account account, Client client) {
-
-//		if (client.getAccounts().size() > 1) {
-//			System.out.println("Here's your Accounts: ");
-//		}else {
-//			System.err.println("You have no other accounts!");
-//			return;
-//		}
 		
 		for (Account thisAccount : accountService.getAll()) {
 			
@@ -179,11 +169,13 @@ public class Atm {
 		Account receivingAccount = accountService.getById(id);
 		atmService.transfer(account, receivingAccount);
 	}
+	
+	public void transferToDiferentAccount(Account account, Client client){
 
-	private void plafond(CreditCard creditCard, Account account, Client client) {
-		
-		System.out.println("Type value to pay Plafond: ");
-		Double valueInputPlafond = scan.nextDouble();
-		atmService.payPlafond(account, creditCard, valueInputPlafond);
+		System.out.println("Type Account NIB number to transfer value");
+		String nib = scan.next();
+
+		Account receivingAccount = accountService.getByNib(nib);
+		atmService.transfer(account, receivingAccount);
 	}
 }
