@@ -72,7 +72,6 @@ public class AtmServiceImpl implements AtmService {
 		} 
 
 		account.setBalance(account.getBalance() - valueInput);
-
 		receivingAccount.setBalance(receivingAccount.getBalance() + valueInput);
 
 		System.out.println("Transfer Completed! This Account balance is now: " + account.getBalance() + " And Account with ID: "

@@ -142,9 +142,7 @@ public class Atm {
 
 	private void transactionsHistory(Account account) {
 		
-		for (Integer transaction : account.getSecondaryOwnersId()) {
-			System.out.println(transaction);
-		}
+		account.getTransactions().forEach(System.out::println);
 	}
 	
 	private void plafond(CreditCard creditCard, Account account, Client client) {
