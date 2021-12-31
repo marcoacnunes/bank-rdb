@@ -55,17 +55,17 @@ public class ClientRepositoryImpl implements ClientRepository {
 		MySQL.execute(query, Operation.UPDATE);
 		return findById(client.getId());
 	}
-
+	
 	@Override
-	public Optional<Client> saveSecondaryOwner(Client client, Account account) {
+	public Optional<Client> saveAccountClient(Client client, Account account) {
 		
 		String query = "INSERT INTO account_client (account_id, client_id)"
 					+ " VALUES ('"	+ account.getId() 			+ "', '" 
 									+ client.getId() 			+ "');";
 		
 		MySQL.execute(query, Operation.INSERT);
-		Integer id = MySQL.getMaxId("account_client");
-		return findById(id);
+		
+		return Optional.of(client);
 	}
 
 	@Override
@@ -74,6 +74,28 @@ public class ClientRepositoryImpl implements ClientRepository {
 		String query = "SELECT * FROM client;";
 		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		return extractList(rs);
+	}
+	
+	@Override
+	public List<Client> findAccountClients(Integer accountId) {
+		
+		String query = "SELECT * FROM account_client WHERE account_id = " + accountId + ";";
+		ResultSet rs = MySQL.execute(query, Operation.SELECT);
+		
+		List<Client> clients = new ArrayList<Client>();
+		
+		try {
+			while (rs.next()) {
+				
+				Optional<Client> client = findById(rs.getInt(2));
+				clients.add(client.get());
+			}
+			return clients;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Collections.emptyList();
 	}
 
 	@Override

@@ -1,13 +1,11 @@
 package pt.rumos.service;
 
 import java.util.List;
-import pt.rumos.model.Account;
 import pt.rumos.model.Card;
-import pt.rumos.model.Client;
 
 public interface CardService {
     
-    Card save(Card card,  Account account, Client client);
+    Card save(Card card,  Integer accountId, Integer clientId);
     
     List<Card> getAll();
 

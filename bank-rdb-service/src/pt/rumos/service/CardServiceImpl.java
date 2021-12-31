@@ -1,10 +1,9 @@
 package pt.rumos.service;
 
 import java.util.List;
+
 import pt.rumos.exception.ServiceException;
-import pt.rumos.model.Account;
 import pt.rumos.model.Card;
-import pt.rumos.model.Client;
 import pt.rumos.model.CreditCard;
 import pt.rumos.model.DebitCard;
 import pt.rumos.repository.CardRepository;
@@ -15,14 +14,14 @@ public class CardServiceImpl implements CardService {
 	private CardRepository cardRepository = new CardRepositoryImpl();
 
 	@Override
-	public Card save(Card card, Account account, Client client) {
+	public Card save(Card card, Integer accountId, Integer clientId) {
 		
 		for (Card existingCard : cardRepository.findAll()) {
 			
-			if(existingCard.getClass().equals(CreditCard.class) && existingCard.getClientId().equals(client.getId())) {
+			if(existingCard.getClass().equals(CreditCard.class) && existingCard.getClientId().equals(clientId)) {
 				throw new ServiceException("Sorry! Not processed! The bank only allows 1 Credit Card per Client.");
 				
-			}else if(existingCard.getClass().equals(DebitCard.class) && existingCard.getClientId().equals(client.getId())) {
+			}else if(existingCard.getClass().equals(DebitCard.class) && existingCard.getClientId().equals(clientId)) {
 				throw new ServiceException("Sorry! Not processed! The bank only allows 1 Debit Card per Client.");
 			}
 		}
@@ -32,10 +31,10 @@ public class CardServiceImpl implements CardService {
 		
 		for (Card existingCard : cardRepository.findAll()) {
 			
-			if(existingCard.getClass().equals(CreditCard.class) && existingCard.getAccountId().equals(account.getId())) {
+			if(existingCard.getClass().equals(CreditCard.class) && existingCard.getAccountId().equals(accountId)) {
 				creditCardCounter += 1;
 				
-			}else if(existingCard.getClass().equals(DebitCard.class) && existingCard.getAccountId().equals(account.getId())) {
+			}else if(existingCard.getClass().equals(DebitCard.class) && existingCard.getAccountId().equals(accountId)) {
 				debitCardCounter += 1;
 			}
 			
@@ -43,7 +42,7 @@ public class CardServiceImpl implements CardService {
 			if(debitCardCounter == 4) throw new ServiceException("Sorry! Not processed! The bank only allows 4 Debit Card per Account.");
 		}
 		
-	    return cardRepository.save(card, account, client).orElseThrow(() -> new ServiceException("There was an error while saving Credit Card"));
+	    return cardRepository.save(card, accountId, clientId).orElseThrow(() -> new ServiceException("There was an error while saving Credit Card"));
 	}
 	
 	@Override

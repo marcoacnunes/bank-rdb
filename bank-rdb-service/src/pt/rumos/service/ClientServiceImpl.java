@@ -27,13 +27,18 @@ public class ClientServiceImpl implements ClientService {
     }
     
     @Override
-    public Client saveSecondaryOwner(Client client, Account account) {
-    	return clientRepository.saveSecondaryOwner(client, account).orElseThrow(() -> new ServiceException("There was a problem saving Secondary Owner"));
+    public Client saveAccountClient(Client client, Account account) {
+    	return clientRepository.saveAccountClient(client, account).orElseThrow(() -> new ServiceException("There was a problem saving Client"));
     }
 
     @Override
     public List<Client> getAll() {
     	return clientRepository.findAll();
+    }
+    
+    @Override
+    public List<Client> getAccountClients(Integer accountId) {
+    	return clientRepository.findAccountClients(accountId);
     }
 
     @Override
@@ -50,5 +55,6 @@ public class ClientServiceImpl implements ClientService {
     public void deleteByNif(String nif) {
     	clientRepository.deleteByNif(nif);
     }
+
 
 }

@@ -9,15 +9,17 @@ public interface ClientRepository {
 
     Optional<Client> save(Client client);
 
-    Optional<Client> saveSecondaryOwner(Client client, Account account);
+    Optional<Client> saveAccountClient(Client client, Account account);
     
     List<Client> findAll();
 
+    List<Client> findAccountClients(Integer accountId);
+    
     Optional<Client> findById(Integer id);
     
     Optional<Client> findByNif(String nif);
 
     void deleteByNif(String nif);
-
+    
 
 }

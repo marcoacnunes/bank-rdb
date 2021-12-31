@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import pt.rumos.model.Account;
+
 import pt.rumos.model.Card;
-import pt.rumos.model.Client;
 import pt.rumos.model.CreditCard;
 import pt.rumos.model.DebitCard;
 
@@ -16,25 +15,25 @@ public class CardRepositoryListImpl implements CardRepository {
 	private static int id = 1;
 	
 	@Override
-	public Optional<Card> save(Card card, Account account, Client client) {
+	public Optional<Card> save(Card card, Integer accountId, Integer clientId) {
 		
 		if(card.getClass().equals(CreditCard.class)) {
-			return setCreditCard(card, account, client);
+			return setCreditCard(card, accountId, clientId);
 			
 		}else if(card.getClass().equals(DebitCard.class)) {
-			return setDebitCard(card, account, client);
+			return setDebitCard(card, accountId, clientId);
 		}
 		return null;
 	}
 
-	private Optional<Card> setCreditCard(Card card, Account account, Client client) {
+	private Optional<Card> setCreditCard(Card card, Integer accountId, Integer clientId) {
 		
 		CreditCard creditCard = (CreditCard) card;
 		
 		creditCard.setId(id);
 		id++;
-		creditCard.setClientId(client.getId());
-		creditCard.setAccountId(account.getId());
+		creditCard.setClientId(clientId);
+		creditCard.setAccountId(accountId);
 		creditCard.setPlafond(1000.00D);
 		
 		Random r = new Random();
@@ -49,14 +48,14 @@ public class CardRepositoryListImpl implements CardRepository {
 		return Optional.of(creditCard);
 	}
 	
-	public Optional<Card> setDebitCard(Card card, Account account, Client client) {
+	public Optional<Card> setDebitCard(Card card, Integer accountId, Integer clientId) {
 		
 		DebitCard debitCard = (DebitCard) card;
 		
 		debitCard.setId(id);
 		id++; 
-		debitCard.setClientId(client.getId());
-		debitCard.setAccountId(account.getId());
+		debitCard.setClientId(clientId);
+		debitCard.setAccountId(accountId);
 				
 		Random r = new Random();
 		String randomNumber = String.format("%04d", r.nextInt(1001));

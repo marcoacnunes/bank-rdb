@@ -90,6 +90,7 @@ public class Management {
 		Account account = new Account();
 		account.setPrimaryOwnerId(client.getId());
 		account = accountService.save(account);
+		clientService.saveAccountClient(client, account);
 		
 		System.out.println("Account and Client created!");
 		System.out.println("Account ID: " + account.getId());
@@ -108,6 +109,8 @@ public class Management {
 		
 		accountService.save(account);
 		System.out.println("Account Created!");
+		
+		clientService.saveAccountClient(client, account);
 	}
 	
 	private void listAllAccounts() {
@@ -163,9 +166,7 @@ public class Management {
 	
 	private void listAllClients() {
 		
-		for (Client client : clientService.getAll()) {
-			System.out.println(client.toString());
-		}
+		accountService.getAll().forEach(System.out::println);
 	}
 	
 	private void findClientByNif() {
@@ -253,7 +254,7 @@ public class Management {
 		clientService.save(client);
 		
 		account.getSecondaryOwnersId().add(client.getId());
-		clientService.saveSecondaryOwner(client, account);
+		clientService.saveAccountClient(client, account);
 		System.out.println("Secondary Owner created!");
 		System.out.println("Client ID: " + client.getId());
 		
@@ -261,15 +262,11 @@ public class Management {
 	
 	private void listAccountClients() {
 		
-		System.out.println("Type Account ID to list all Owners ID: ");
+		System.out.println("Type Account ID: ");
 		int input = scan.nextInt();
 		
 		Account account = accountService.getById(input);
-		System.out.println("Primary Owner ID: " + accountService.getById(input).getPrimaryOwnerId());
-		
-		for (Integer secondaryOwnerId : account.getSecondaryOwnersId()) {
-			System.out.println("Secondary Owner ID: " + secondaryOwnerId);
-		}
+		clientService.getAccountClients(account.getId()).forEach(System.out::println);
 	}
 
 	private void cardManagement() {
@@ -317,9 +314,8 @@ public class Management {
 		String nif = scan.next();
 		
 		Client client = clientService.getByNif(nif);
-		
 		CreditCard creditCard = new CreditCard();
-		cardService.save(creditCard, account, client);
+		cardService.save(creditCard, account.getId(), client.getId());
 	}
 	
 	private void createDebitCard() {
@@ -333,21 +329,8 @@ public class Management {
 		String nif = scan.next();
 		
 		Client client = clientService.getByNif(nif);
-		
 		DebitCard debitCard = new DebitCard();
-		
-		cardService.save(debitCard, account, client);
-	}
-	
-	private void listAllCards() {
-
-		if(cardService.getAll().size() != 0) {
-			for (Card card : cardService.getAll()) {
-				System.out.println(card.toString());
-			}
-		}else {
-			System.out.println("No cards stored!");
-		}
+		cardService.save(debitCard, account.getId(), client.getId());
 	}
 	
 	private void cancelCreditCard() {
@@ -357,13 +340,7 @@ public class Management {
 		
 		Client client = clientService.getByNif(nif);
 		Card card = cardService.getByClientId(client.getId());
-		
-		if(card.getClass().equals(CreditCard.class)) {
-			cardService.deleteById(card.getId());
-			System.out.println("Crebit Card Deleted!");		
-		}else {
-			System.out.println("Credit Card not found.");
-		}
+		cardService.deleteById(card.getId());
 	}
 	
 	private void cancelDebitCard() {
@@ -373,14 +350,12 @@ public class Management {
 		
 		Client client = clientService.getByNif(nif);
 		Card card = cardService.getByClientId(client.getId());
-		
-		if(card.getClass().equals(DebitCard.class)) {
-			
-			cardService.deleteById(card.getId());
-			System.out.println("Debit Card Deleted!");		
-		}else {
-			System.out.println("Debit Card not found.");
-		}
+		cardService.deleteById(card.getId());
+	}
+	
+	private void listAllCards() {
+
+		cardService.getAll().forEach(System.out::println);
 	}
 
 	private Client askClientInfo() {

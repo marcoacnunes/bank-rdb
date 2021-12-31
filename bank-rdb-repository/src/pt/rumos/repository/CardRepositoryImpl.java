@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 import pt.rumos.database.MySQL;
 import pt.rumos.database.Operation;
-import pt.rumos.model.Account;
 import pt.rumos.model.Card;
-import pt.rumos.model.Client;
 import pt.rumos.model.CreditCard;
 import pt.rumos.model.DebitCard;
 
 public class CardRepositoryImpl implements CardRepository {
 
 	@Override
-	public Optional<Card> save(Card card, Account account, Client client) {
+	public Optional<Card> save(Card card, Integer accountId, Integer clientId) {
 		
 		CreditCard creditCard = null;
 		DebitCard debitCard = null;

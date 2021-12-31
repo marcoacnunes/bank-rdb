@@ -21,12 +21,20 @@ public class ClientRepositoryListImpl implements ClientRepository {
 			return create(client);
 		}
 	}
-
+	
 	private Optional<Client> create(Client client) {
+		
 		clients.add(client);
 		client.setId(id);
 		id++;
 		
+		return Optional.of(client);
+	}
+	
+	@Override
+	public Optional<Client> saveAccountClient(Client client, Account account) {
+		
+		account.getSecondaryOwnersId().add(client.getId());
 		return Optional.of(client);
 	}
 
@@ -36,6 +44,8 @@ public class ClientRepositoryListImpl implements ClientRepository {
 		Client existingClient = clientOpt.get();
 		existingClient = client;
 		
+		
+		
 		return Optional.of(existingClient);
 	}
 
@@ -44,6 +54,11 @@ public class ClientRepositoryListImpl implements ClientRepository {
 		return clients;
 	}
 
+	@Override
+	public List<Client> findAccountClients(Integer accountId) {
+		return clients;
+	}
+	
 	@Override
 	public Optional<Client> findById(Integer id) {
 
@@ -78,11 +93,5 @@ public class ClientRepositoryListImpl implements ClientRepository {
 		}
 	}
 
-	@Override
-	public Optional<Client> saveSecondaryOwner(Client client, Account account) {
-		
-		account.getSecondaryOwnersId().add(client.getId());
-		return Optional.empty();
-	}
 
 }

@@ -8,7 +8,11 @@ public interface ClientService {
     
     Client save(Client client);
 
+    Client saveAccountClient(Client client, Account account);
+    
     List<Client> getAll();
+    
+    List<Client> getAccountClients(Integer accountId);
 
     Client getById(Integer id);
     
@@ -16,6 +20,5 @@ public interface ClientService {
 
     void deleteByNif(String nif);
 
-	Client saveSecondaryOwner(Client client, Account account);
-
+	
 }
