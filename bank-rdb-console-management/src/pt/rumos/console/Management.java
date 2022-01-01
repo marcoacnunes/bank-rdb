@@ -251,9 +251,8 @@ public class Management {
 		Account account = accountService.getById(id);
 
 		Client client = askClientInfo();
-		clientService.save(client);
+		client = clientService.save(client);
 		
-		account.getSecondaryOwnersId().add(client.getId());
 		clientService.saveAccountClient(client, account);
 		System.out.println("Secondary Owner created!");
 		System.out.println("Client ID: " + client.getId());

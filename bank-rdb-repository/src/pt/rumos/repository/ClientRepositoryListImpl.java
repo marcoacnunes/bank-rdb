@@ -38,7 +38,8 @@ public class ClientRepositoryListImpl implements ClientRepository {
 		return Optional.of(client);
 	}
 
-	private Optional<Client> update(Client client) { 				//to be tested
+	private Optional<Client> update(Client client) { 				
+		
 		Optional<Client> clientOpt = findByNif(client.getNif());
 		
 		Client existingClient = clientOpt.get();
