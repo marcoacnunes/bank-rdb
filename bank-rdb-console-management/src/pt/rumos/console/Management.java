@@ -90,7 +90,7 @@ public class Management {
 		Account account = new Account();
 		account.setPrimaryOwnerId(client.getId());
 		account = accountService.save(account);
-		clientService.saveAccountClient(client, account);
+		accountService.saveAccountClient(client, account);
 		
 		System.out.println("Account and Client created!");
 		System.out.println("Account ID: " + account.getId());
@@ -110,7 +110,7 @@ public class Management {
 		accountService.save(account);
 		System.out.println("Account Created!");
 		
-		clientService.saveAccountClient(client, account);
+		accountService.saveAccountClient(client, account);
 	}
 	
 	private void listAllAccounts() {

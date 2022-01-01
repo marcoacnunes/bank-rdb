@@ -14,6 +14,8 @@ import pt.rumos.model.CreditCard;
 import pt.rumos.model.DebitCard;
 
 public class CardRepositoryImpl implements CardRepository {
+	
+	private MySQL mySQL = new MySQL();
 
 	@Override
 	public Optional<Card> save(Card card, Integer accountId, Integer clientId) {
@@ -27,7 +29,7 @@ public class CardRepositoryImpl implements CardRepository {
 			creditCard = (CreditCard) card;
 			sql = "INSERT INTO card (plafond, daily_withdrawals) VALUES ('"	+ creditCard.getPlafond() 			+ "', '" 
 																			+ creditCard.getDailyWithdrawals() 	+ "', ');";
-			MySQL.execute(sql, Operation.INSERT);
+			mySQL.execute(sql, Operation.INSERT);
 
 		}
 		
@@ -35,15 +37,15 @@ public class CardRepositoryImpl implements CardRepository {
 			
 			debitCard = (DebitCard) card;
 			sql = "INSERT INTO card (last_withdrawal) VALUES ('" + debitCard.getLastWithdrawal() + "');";
-			MySQL.execute(sql, Operation.INSERT);
+			mySQL.execute(sql, Operation.INSERT);
 		}
 		
 		sql = "INSERT INTO card (client_id, pin, account_id) VALUES ('"	+ card.getClientId() 	+ "', '" 
 																		+ card.getPin() 		+ "', '"
 																		+ card.getAccountId() 	+ "');";
 	
-		MySQL.execute(sql, Operation.INSERT);
-		Integer id = MySQL.getMaxId("card");
+		mySQL.execute(sql, Operation.INSERT);
+		Integer id = mySQL.getMaxId("card");
 		return findById(id);
 	}
 
@@ -51,7 +53,7 @@ public class CardRepositoryImpl implements CardRepository {
 	public List<Card> findAll() {
 		
 		String sql = "SELECT * FROM card;";
-		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
+		ResultSet rs = mySQL.execute(sql, Operation.SELECT);
 		return extractList(rs);
 	}
 
@@ -59,7 +61,7 @@ public class CardRepositoryImpl implements CardRepository {
 	public Optional<Card> findById(Integer id) {
 		
 		String sql = "SELECT * FROM card WHERE id LIKE " + id + ";";
-		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
+		ResultSet rs = mySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
 	}
 
@@ -67,7 +69,7 @@ public class CardRepositoryImpl implements CardRepository {
 	public Optional<Card> findByClientId(Integer clientId) {
 		
 		String sql = "SELECT * FROM card WHERE clientId LIKE " + clientId + ";";
-		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
+		ResultSet rs = mySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
 	}
 
@@ -75,7 +77,7 @@ public class CardRepositoryImpl implements CardRepository {
 	public Optional<Card> findByAccountId(Integer accountId) {
 		
 		String sql = "SELECT * FROM card WHERE accountId LIKE " + accountId + ";";
-		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
+		ResultSet rs = mySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
 	}
 
@@ -83,7 +85,7 @@ public class CardRepositoryImpl implements CardRepository {
 	public void deleteById(Integer id) {
 		
 		String sql = "DELETE FROM card WHERE id LIKE '" + id + "';";
-		MySQL.execute(sql, Operation.DELETE);		
+		mySQL.execute(sql, Operation.DELETE);		
 	}
 	
 	private List<Card> extractList(ResultSet rs) {

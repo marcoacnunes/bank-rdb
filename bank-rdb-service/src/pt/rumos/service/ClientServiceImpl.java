@@ -1,8 +1,8 @@
 package pt.rumos.service;
 
 import java.util.List;
+
 import pt.rumos.exception.ServiceException;
-import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 import pt.rumos.repository.ClientRepository;
 import pt.rumos.repository.ClientRepositoryImpl;
@@ -27,20 +27,10 @@ public class ClientServiceImpl implements ClientService {
     }
     
     @Override
-    public Client saveAccountClient(Client client, Account account) {
-    	return clientRepository.saveAccountClient(client, account).orElseThrow(() -> new ServiceException("There was a problem saving Client"));
-    }
-
-    @Override
     public List<Client> getAll() {
     	return clientRepository.findAll();
     }
     
-    @Override
-    public List<Client> getAccountClients(Integer accountId) {
-    	return clientRepository.findAccountClients(accountId);
-    }
-
     @Override
     public Client getById(Integer id) {
     	return clientRepository.findById(id).orElseThrow(() -> new ServiceException("Client with ID: " + id + " not found."));

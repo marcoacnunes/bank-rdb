@@ -11,10 +11,10 @@ public class MySQL {
 	private static final String URL = "jdbc:mysql://localhost:3306/rdb";
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "pa$$w0rd";
-	private static Connection connection;
-	private static Statement stmt;
+	private Connection connection;
+	private Statement stmt;
 	
-	private static void init() {
+	private void init() {
 		
 		try {
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -24,7 +24,7 @@ public class MySQL {
 		}
 	}
 	
-	public static int getMaxId(String tableName) {
+	public int getMaxId(String tableName) {
 		
 		try {
 			ResultSet rs = execute("SELECT max(id) FROM " + tableName + ";", Operation.SELECT);
@@ -38,7 +38,7 @@ public class MySQL {
 		return 1;
 	}
 	
-	public static ResultSet execute(String query, Operation operation) {
+	public ResultSet execute(String query, Operation operation) {
 		
 		if(connection == null) {
 			init();

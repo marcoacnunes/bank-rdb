@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 import pt.rumos.database.MySQL;
 import pt.rumos.database.Operation;
-import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 
 public class ClientRepositoryImpl implements ClientRepository {
+	
+	private MySQL mySQL = new MySQL();
 	
 	@Override
 	public Optional<Client> save(Client client) {
@@ -30,8 +32,8 @@ public class ClientRepositoryImpl implements ClientRepository {
 									+ client.getEmail() 		+ "', '"
 									+ client.getOccupation() 	+ "');";
 
-			MySQL.execute(sql, Operation.INSERT);
-			Integer id = MySQL.getMaxId("client");
+			mySQL.execute(sql, Operation.INSERT);
+			Integer id = mySQL.getMaxId("client");
 			return findById(id);
 			
 		}else {
@@ -52,57 +54,23 @@ public class ClientRepositoryImpl implements ClientRepository {
 					+ "occupation 		= '" + client.getOccupation() 	+ "' "
 					+ "WHERE id 		=  " + client.getId()			+ ";";
 				
-		MySQL.execute(query, Operation.UPDATE);
+		mySQL.execute(query, Operation.UPDATE);
 		return findById(client.getId());
 	}
 	
 	@Override
-	public Optional<Client> saveAccountClient(Client client, Account account) {
-		
-		String query = "INSERT INTO account_client (account_id, client_id)"
-					+ " VALUES ('"	+ account.getId() 			+ "', '" 
-									+ client.getId() 			+ "');";
-		
-		MySQL.execute(query, Operation.INSERT);
-		
-		return Optional.of(client);
-	}
-
-	@Override
 	public List<Client> findAll() {
 		
 		String query = "SELECT * FROM client;";
-		ResultSet rs = MySQL.execute(query, Operation.SELECT);
+		ResultSet rs = mySQL.execute(query, Operation.SELECT);
 		return extractList(rs);
 	}
 	
 	@Override
-	public List<Client> findAccountClients(Integer accountId) {
-		
-		String query = "SELECT * FROM account_client WHERE account_id = " + accountId + ";";
-		ResultSet rs = MySQL.execute(query, Operation.SELECT);
-		
-		List<Client> clients = new ArrayList<Client>();
-		
-		try {
-			if (rs.next()) {
-				
-				Optional<Client> client = findById(rs.getInt(2));
-				clients.add(client.get());
-			}
-			return clients;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return Collections.emptyList();
-	}
-
-	@Override
 	public Optional<Client> findById(Integer id) {
 
 		String query = "SELECT * FROM client WHERE id =" + id + ";";
-		ResultSet rs = MySQL.execute(query, Operation.SELECT);
+		ResultSet rs = mySQL.execute(query, Operation.SELECT);
 		return extractObject(rs);
 	}
 
@@ -110,7 +78,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	public Optional<Client> findByNif(String nif) {
 
 		String query = "SELECT * FROM client WHERE nif LIKE '" + nif + "';";
-		ResultSet rs = MySQL.execute(query, Operation.SELECT);
+		ResultSet rs = mySQL.execute(query, Operation.SELECT);
 		return extractObject(rs);
 	}
 
@@ -118,7 +86,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	public void deleteByNif(String nif) {
 	
 		String sql = "DELETE FROM client WHERE nif LIKE '" + nif + "';";
-		MySQL.execute(sql, Operation.DELETE);
+		mySQL.execute(sql, Operation.DELETE);
 	}
 	
 	private List<Client> extractList(ResultSet rs) {

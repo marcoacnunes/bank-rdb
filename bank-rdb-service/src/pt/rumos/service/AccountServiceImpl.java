@@ -2,8 +2,10 @@ package pt.rumos.service;
 
 import java.util.List;
 import java.util.Random;
+
 import pt.rumos.exception.ServiceException;
 import pt.rumos.model.Account;
+import pt.rumos.model.Client;
 import pt.rumos.repository.AccountRepository;
 import pt.rumos.repository.AccountRepositoryImpl;
 
@@ -16,6 +18,16 @@ public class AccountServiceImpl implements AccountService{
 		account.setNib(generateAndCheckIfUniqueNib());
 		return accountRepository.save(account).orElseThrow(() -> new ServiceException("There was a problem while saving Account."));
 	}
+	
+    @Override
+    public Client saveAccountClient(Client client, Account account) {
+    	return accountRepository.saveAccountClient(client, account).orElseThrow(() -> new ServiceException("There was a problem saving Client"));
+    }
+    
+    @Override
+    public List<Client> getAccountClients(Integer accountId) {
+    	return accountRepository.findAccountClients(accountId);
+    }
 	
 	@Override
 	public List<Account> getAll() {
@@ -54,4 +66,5 @@ public class AccountServiceImpl implements AccountService{
 		}while(nibExists);
 		return nib;
 	}
+
 }

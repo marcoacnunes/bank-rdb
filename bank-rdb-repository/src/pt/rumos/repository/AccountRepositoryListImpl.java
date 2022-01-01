@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+
 import pt.rumos.model.Account;
+import pt.rumos.model.Client;
 
 public class AccountRepositoryListImpl implements AccountRepository {
 
@@ -79,5 +81,17 @@ public class AccountRepositoryListImpl implements AccountRepository {
 			accounts.remove(account.get());
 		}
     }
+
+    @Override
+	public Optional<Client> saveAccountClient(Client client, Account account) {
+		
+		account.getSecondaryOwnersId().add(client.getId());
+		return Optional.of(client);
+	}
+
+    @Override
+	public List<Client> findAccountClients(Integer accountId) {
+		return null; //not thought-out yet
+	}
 }
 

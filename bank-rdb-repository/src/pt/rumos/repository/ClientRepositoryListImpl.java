@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 
 public class ClientRepositoryListImpl implements ClientRepository {
@@ -31,21 +30,12 @@ public class ClientRepositoryListImpl implements ClientRepository {
 		return Optional.of(client);
 	}
 	
-	@Override
-	public Optional<Client> saveAccountClient(Client client, Account account) {
-		
-		account.getSecondaryOwnersId().add(client.getId());
-		return Optional.of(client);
-	}
-
 	private Optional<Client> update(Client client) { 				
 		
 		Optional<Client> clientOpt = findByNif(client.getNif());
 		
 		Client existingClient = clientOpt.get();
 		existingClient = client;
-		
-		
 		
 		return Optional.of(existingClient);
 	}
@@ -55,11 +45,6 @@ public class ClientRepositoryListImpl implements ClientRepository {
 		return clients;
 	}
 
-	@Override
-	public List<Client> findAccountClients(Integer accountId) {
-		return clients;
-	}
-	
 	@Override
 	public Optional<Client> findById(Integer id) {
 
@@ -93,6 +78,5 @@ public class ClientRepositoryListImpl implements ClientRepository {
 			clients.remove(client.get());
 		}
 	}
-
 
 }
