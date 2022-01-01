@@ -3,7 +3,7 @@ Bank Management System
 
 Description
 -----------
-In this repostiory you will find the following:
+In this repository you will find the following:
 * bank-rdb-console-management:
 ** This Module is used to manipulate the rdb probject in a console interface.
 * bank-rdb-model:
@@ -11,17 +11,12 @@ In this repostiory you will find the following:
 * bank-rdb-repository:
 ** This Module is reponsible for storing in a persistence manner the data used by the Service using MySql as DataBase.
 * bank-rdb-service:
-** This Module is responsible for business rules.
+** This Module is responsible for business logic.
 * bank-rdb-springboot:
 ** This Module is the controller/entrypoint for all restful requests for the following:
 * base url/<endpoint>
 
-
-  
-![Image]( https://i2.wp.com/lamountaincoaching.com/wp-content/uploads/2014/08/Under-Construction-Success-Image.jpg?fit=799%2C599&ssl=1)
-  
-
-The following project came as a challenge from [Rumos](https://www.linkedin.com/company/rumos/) to create a digital bank with a management system and JDBC, allowing to create, store, update and access Clients, Accounts, and Credit/Debit Cards. It also includes an ATM as a Graphical User Interface. __Work in progress..__
+![Image]( https://www.bestprograms.org/wp/wp-content/uploads/2015/11/under-construction.gif)
 
 Tech Stack
 ----------
