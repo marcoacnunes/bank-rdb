@@ -85,7 +85,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 		List<Client> clients = new ArrayList<Client>();
 		
 		try {
-			while (rs.next()) {
+			if (rs.next()) {
 				
 				Optional<Client> client = findById(rs.getInt(2));
 				clients.add(client.get());
