@@ -166,7 +166,7 @@ public class Management {
 	
 	private void listAllClients() {
 		
-		accountService.getAll().forEach(System.out::println);
+		clientService.getAll().forEach(System.out::println);
 	}
 	
 	private void findClientByNif() {
