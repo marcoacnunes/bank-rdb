@@ -64,5 +64,4 @@ public class Account {
 		return "Account [id=" + id + ", nib=" + nib + ", primaryOwnerId=" + primaryOwnerId + ", secondaryOwnersId="
 				+ secondaryOwnersId + ", balance=" + balance + "]";
 	}
-
 }

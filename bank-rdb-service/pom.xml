@@ -3,19 +3,18 @@
   <groupId>bank-rdb-service</groupId>
   <artifactId>bank-rdb-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
   <dependencies>
+  
 		<dependency>
 			<groupId>bank-rdb-model</groupId>
 			<artifactId>bank-rdb-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			
 		</dependency>
+		
 		<dependency>
 			<groupId>bank-rdb-repository</groupId>
 			<artifactId>bank-rdb-repository</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			
 		</dependency>
 		
 	</dependencies>
