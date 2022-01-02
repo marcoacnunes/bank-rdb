@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import pt.rumos.model.Card;
 import pt.rumos.model.CreditCard;
@@ -14,6 +15,7 @@ import pt.rumos.model.DebitCard;
 import pt.rumos.service.CardService;
 import pt.rumos.service.CardServiceImpl;
 
+@RestController
 public class CardController {
 
 	private CardService cardService = new CardServiceImpl();

@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 import pt.rumos.service.AccountService;
 import pt.rumos.service.AccountServiceImpl;
 
+@RestController
 public class AccountController {
 
 	private AccountService accountService = new AccountServiceImpl();

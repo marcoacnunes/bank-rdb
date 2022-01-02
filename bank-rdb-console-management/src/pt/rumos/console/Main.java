@@ -40,6 +40,7 @@ public class Main {
 					break;
 			}
 		}while(option != 0);
+		scan.close();
 	}
 
 	private static void showMenu() {
