@@ -15,7 +15,8 @@ In this repository you will find the following:
 * bank-rdb-service:
 **This Module is responsible for business logic.**
 * bank-rdb-springboot:
-**This Module is the controller/entrypoint for all restful requests for the following:** base url/swagger-ui/
+**This Module is the controller/entrypoint for all restful requests for the following:** 
+base url/swagger-ui/
 
 Tech Stack
 ----------
