@@ -9,7 +9,7 @@ In this repository you will find the following:
 * bank-rdb-console-management:
 **This Module is used to manipulate the rdb project in a console interface.**
 * bank-rdb-model:
-**This Module contains the model layer of the Application. Atention: the toString() is Overridden.**
+**This Module contains the model layer of the Application. Attention: the toString() is Overridden.**
 * bank-rdb-repository:
 **This Module is responsible for storing in a persistent manner the data used by the Service using MySql as DataBase.**
 * bank-rdb-service:
