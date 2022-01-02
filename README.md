@@ -3,7 +3,7 @@ Bank Management System
 
 Description
 -----------
-The following project came as a challenge from [Rumos](https://www.linkedin.com/company/rumos/) to create a digital bank with a management system and JDBC, allowing to create, store, update and access Clients, Accounts, and Credit/Debit Cards. 
+The following project came as a challenge from [Rumos](https://www.linkedin.com/company/rumos/) to create a digital bank with a management system using JDBC + Spring Boot, allowing to create, store, update and access Clients, Accounts, and Credit/Debit Cards. 
 
 In this repository you will find the following:
 * bank-rdb-console-management:
