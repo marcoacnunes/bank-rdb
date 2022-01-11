@@ -88,7 +88,7 @@ public class Management {
 		client = clientService.save(client);
 		
 		Account account = new Account();
-		account.setPrimaryOwnerId(client.getId());
+		account.setPrimaryOwner(client);
 		account = accountService.save(account);
 		accountService.saveAccountClient(client, account);
 		
@@ -105,7 +105,7 @@ public class Management {
 		
 		Client client = clientService.getByNif(nif);
 		Account account = new Account();
-		account.setPrimaryOwnerId(client.getId());
+		account.setPrimaryOwner(client);
 		
 		accountService.save(account);
 		System.out.println("Account Created!");
@@ -314,7 +314,7 @@ public class Management {
 		
 		Client client = clientService.getByNif(nif);
 		CreditCard creditCard = new CreditCard();
-		cardService.save(creditCard, account.getId(), client.getId());
+		cardService.save(creditCard);
 	}
 	
 	private void createDebitCard() {
@@ -329,7 +329,7 @@ public class Management {
 		
 		Client client = clientService.getByNif(nif);
 		DebitCard debitCard = new DebitCard();
-		cardService.save(debitCard, account.getId(), client.getId());
+		cardService.save(debitCard);
 	}
 	
 	private void cancelCreditCard() {
@@ -366,41 +366,41 @@ public class Management {
 		String name = scan.next();
 		client.setName(name);
 
-//		System.out.println("Password: ");
-//		String password = scan.next();
-//		client.setPassword(password);
-//
-//	 	System.out.print("Date of birth (yyyy-MM-dd): ");
-//	
-//		try {
-//			LocalDate dob = LocalDate.parse(scan.next());
-//			client.setdateOfBirth(dob);
-//			
-//		}catch (Exception e) {
-//			System.out.println("Wrong input. Try again");
-//			askClientInfo();
-//		}
-//		
+		System.out.println("Password: ");
+		String password = scan.next();
+		client.setPassword(password);
+
+	 	System.out.print("Date of birth (yyyy-MM-dd): ");
+	
+		try {
+			LocalDate dob = LocalDate.parse(scan.next());
+			client.setDateOfBirth(dob);
+			
+		}catch (Exception e) {
+			System.out.println("Wrong input. Try again");
+			askClientInfo();
+		}
+		
 		System.out.println("NIF: ");
 		String nif = scan.next();
 		client.setNif(nif);
-//		
-//		System.out.println("Telephone number: ");
-//		String telephone = scan.next();
-//		client.setPhone(telephone);
-//		
-//		System.out.println("Mobile number: ");
-//		String mobile = scan.next();
-//		client.setMobile(mobile);
-//		
-//		System.out.println("Email: ");
-//		String email = scan.next();
-//		client.setEmail(email);
-//		
-//		System.out.println("Occupation");	
-//		String occupation = scan.next();
-//		client.setOccupation(occupation);
-//		
+		
+		System.out.println("Telephone number: ");
+		String telephone = scan.next();
+		client.setPhone(telephone);
+		
+		System.out.println("Mobile number: ");
+		String mobile = scan.next();
+		client.setMobile(mobile);
+		
+		System.out.println("Email: ");
+		String email = scan.next();
+		client.setEmail(email);
+		
+		System.out.println("Occupation");	
+		String occupation = scan.next();
+		client.setOccupation(occupation);
+		
 		return client;
 	}	
 

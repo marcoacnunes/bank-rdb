@@ -31,15 +31,13 @@ public class CardController {
 	}
 
 	@RequestMapping(value = "/creditCard", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Card createCreditCard(@RequestBody CreditCard creditCard, Integer accountId, Integer clientId)
-			throws Exception {
-		return cardService.save(creditCard, accountId, clientId);
+	public Card createCreditCard(@RequestBody CreditCard creditCard) throws Exception {
+		return cardService.save(creditCard);
 	}
 
 	@RequestMapping(value = "/debitCard", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Card createDebitCard(@RequestBody DebitCard debitCard, Integer accountId, Integer clientId)
-			throws Exception {
-		return cardService.save(debitCard, accountId, clientId);
+	public Card createDebitCard(@RequestBody DebitCard debitCard) throws Exception {
+		return cardService.save(debitCard);
 	}
 
 	@RequestMapping(value = "/card/{id}", method = RequestMethod.DELETE)

@@ -86,7 +86,7 @@ public class Atm {
 	
 			choice = scan.nextInt();
 	
-			Account account = accountService.getById(card.getAccountId());
+			Account account = accountService.getById(card.getAccount().getId());
 			
 			switch (choice) {
 				case 1:
@@ -156,7 +156,7 @@ public class Atm {
 		
 		for (Account thisAccount : accountService.getAll()) {
 			
-			if(thisAccount.getPrimaryOwnerId().equals(client.getId())){
+			if(thisAccount.getPrimaryOwner().getId().equals(client.getId())){
 				System.out.println("ID: " + thisAccount.getId() + " NIB: " + thisAccount.getNib());
 			}
 		}

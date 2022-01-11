@@ -14,8 +14,6 @@ import pt.rumos.model.Client;
 
 public class ClientRepositoryImpl implements ClientRepository {
 	
-	private MySQL mySQL = new MySQL();
-	
 	@Override
 	public Optional<Client> save(Client client) {
 		
@@ -32,8 +30,8 @@ public class ClientRepositoryImpl implements ClientRepository {
 									+ client.getEmail() 		+ "', '"
 									+ client.getOccupation() 	+ "');";
 
-			mySQL.execute(sql, Operation.INSERT);
-			Integer id = mySQL.getMaxId("client");
+			MySQL.execute(sql, Operation.INSERT);
+			Integer id = MySQL.getMaxId("client");
 			return findById(id);
 			
 		}else {
@@ -54,7 +52,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 					+ "occupation 		= '" + client.getOccupation() 	+ "' "
 					+ "WHERE id 		=  " + client.getId()			+ ";";
 				
-		mySQL.execute(query, Operation.UPDATE);
+		MySQL.execute(query, Operation.UPDATE);
 		return findById(client.getId());
 	}
 	
@@ -62,7 +60,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	public List<Client> findAll() {
 		
 		String query = "SELECT * FROM client;";
-		ResultSet rs = mySQL.execute(query, Operation.SELECT);
+		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		return extractList(rs);
 	}
 	
@@ -70,7 +68,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	public Optional<Client> findById(Integer id) {
 
 		String query = "SELECT * FROM client WHERE id =" + id + ";";
-		ResultSet rs = mySQL.execute(query, Operation.SELECT);
+		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		return extractObject(rs);
 	}
 
@@ -78,7 +76,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	public Optional<Client> findByNif(String nif) {
 
 		String query = "SELECT * FROM client WHERE nif LIKE '" + nif + "';";
-		ResultSet rs = mySQL.execute(query, Operation.SELECT);
+		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		return extractObject(rs);
 	}
 
@@ -86,7 +84,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	public void deleteByNif(String nif) {
 	
 		String sql = "DELETE FROM client WHERE nif LIKE '" + nif + "';";
-		mySQL.execute(sql, Operation.DELETE);
+		MySQL.execute(sql, Operation.DELETE);
 	}
 	
 	private List<Client> extractList(ResultSet rs) {

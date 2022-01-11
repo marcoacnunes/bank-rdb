@@ -5,7 +5,7 @@ import pt.rumos.model.Card;
 
 public interface CardService {
     
-    Card save(Card card,  Integer accountId, Integer clientId);
+    Card save(Card card);
     
     List<Card> getAll();
 

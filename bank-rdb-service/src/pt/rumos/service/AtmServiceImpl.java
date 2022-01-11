@@ -29,7 +29,7 @@ public class AtmServiceImpl implements AtmService {
 		
 		for (Card card : cardService.getAll()) {
 			
-			if (card.getClass().equals(CreditCard.class) &&  card.getClientId().equals(client.getId())) {
+			if (card.getClass().equals(CreditCard.class) &&  card.getClient().getId().equals(client.getId())) {
 				   
 				System.out.println("ID: " + card.getId() + " - CreditCard Available");
 				return card;
@@ -43,7 +43,7 @@ public class AtmServiceImpl implements AtmService {
 		
 		for (Card card : cardService.getAll()) {
 			
-			if (card.getClass().equals(DebitCard.class) &&  card.getClientId().equals(client.getId())) {
+			if (card.getClass().equals(DebitCard.class) &&  card.getClient().getId().equals(client.getId())) {
 				   
 				System.out.println();
 				System.out.println("ID: " + card.getId() + " - DebitCard Available");

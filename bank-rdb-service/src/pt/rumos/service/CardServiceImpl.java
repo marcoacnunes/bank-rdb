@@ -4,8 +4,6 @@ import java.util.List;
 
 import pt.rumos.exception.ServiceException;
 import pt.rumos.model.Card;
-import pt.rumos.model.CreditCard;
-import pt.rumos.model.DebitCard;
 import pt.rumos.repository.CardRepository;
 import pt.rumos.repository.CardRepositoryImpl;
 
@@ -14,35 +12,36 @@ public class CardServiceImpl implements CardService {
 	private CardRepository cardRepository = new CardRepositoryImpl();
 
 	@Override
-	public Card save(Card card, Integer accountId, Integer clientId) {
+	public Card save(Card card) {
 		
-		for (Card existingCard : cardRepository.findAll()) {
-			
-			if(existingCard.getClass().equals(CreditCard.class) && existingCard.getClientId().equals(clientId)) {
-				throw new ServiceException("Sorry! Not processed! The bank only allows 1 Credit Card per Client.");
-				
-			}else if(existingCard.getClass().equals(DebitCard.class) && existingCard.getClientId().equals(clientId)) {
-				throw new ServiceException("Sorry! Not processed! The bank only allows 1 Debit Card per Client.");
-			}
-		}
+//		for (Card existingCard : cardRepository.findAll()) {
+//			
+//			if(existingCard.getClass().equals(CreditCard.class)) {
+//				throw new ServiceException("Sorry! Not processed! The bank only allows 1 Credit Card per Client.");
+//				
+//			}else if(existingCard.getClass().equals(DebitCard.class)) {
+//				throw new ServiceException("Sorry! Not processed! The bank only allows 1 Debit Card per Client.");
+//			}
+//		}
 		
-		int creditCardCounter = 0;
-		int debitCardCounter = 0;
+//		int creditCardCounter = 0;
+//		int debitCardCounter = 0;
+//		
+//		for (Card existingCard : cardRepository.findAll()) {
+//			
+//			if(existingCard.getClass().equals(CreditCard.class)) {
+//				
+//				creditCardCounter += 1;
+//				
+//			}else if(existingCard.getClass().equals(DebitCard.class)) {
+//				debitCardCounter += 1;
+//			}
+//			
+//			if(creditCardCounter == 2) throw new ServiceException("Sorry! Not processed! The bank only allows 2 Credit Card per Account.");
+//			if(debitCardCounter == 4) throw new ServiceException("Sorry! Not processed! The bank only allows 4 Debit Card per Account.");
+//		}
 		
-		for (Card existingCard : cardRepository.findAll()) {
-			
-			if(existingCard.getClass().equals(CreditCard.class) && existingCard.getAccountId().equals(accountId)) {
-				creditCardCounter += 1;
-				
-			}else if(existingCard.getClass().equals(DebitCard.class) && existingCard.getAccountId().equals(accountId)) {
-				debitCardCounter += 1;
-			}
-			
-			if(creditCardCounter == 2) throw new ServiceException("Sorry! Not processed! The bank only allows 2 Credit Card per Account.");
-			if(debitCardCounter == 4) throw new ServiceException("Sorry! Not processed! The bank only allows 4 Debit Card per Account.");
-		}
-		
-	    return cardRepository.save(card, accountId, clientId).orElseThrow(() -> new ServiceException("There was an error while saving Credit Card"));
+	    return cardRepository.save(card).orElseThrow(() -> new ServiceException("There was an error while saving Card"));
 	}
 	
 	@Override

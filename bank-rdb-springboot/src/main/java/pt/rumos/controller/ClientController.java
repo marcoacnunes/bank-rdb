@@ -14,6 +14,7 @@ import pt.rumos.service.ClientService;
 import pt.rumos.service.ClientServiceImpl;
 
 @RestController
+
 public class ClientController {
 
 	private ClientService clientService = new ClientServiceImpl();

@@ -13,19 +13,17 @@ import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 
 public class AccountRepositoryImpl implements AccountRepository {
-
-	private MySQL mySQL = new MySQL();
 	
 	@Override
 	public Optional<Account> save(Account account) {
 		
 		String query = "INSERT INTO account (nib, primary_owner_id, balance)"
-					+ " VALUES ('"	+ account.getNib() 				+ "', '" 
-									+ account.getPrimaryOwnerId() 	+ "', '" 
-									+ account.getBalance() 			+ "');";
+					+ " VALUES ('"	+ account.getNib() 						+ "', '" 
+									+ account.getPrimaryOwner().getId() 	+ "', '" 
+									+ account.getBalance() 					+ "');";
 		
-		mySQL.execute(query, Operation.INSERT);
-		Integer id = mySQL.getMaxId("account");
+		MySQL.execute(query, Operation.INSERT);
+		Integer id = MySQL.getMaxId("account");
 		return findById(id);
 	}
 	
@@ -36,7 +34,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 					+ " VALUES ('"	+ account.getId() 			+ "', '" 
 									+ client.getId() 			+ "');";
 		
-		mySQL.execute(query, Operation.INSERT);
+		MySQL.execute(query, Operation.INSERT);
 		
 		return Optional.of(client);
 	}
@@ -48,7 +46,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 			+	"JOIN client AS c ON ac.client_id = c.id "
 			+	"WHERE ac.account_id = " + accountId + ";";
 		
-		ResultSet rs = mySQL.execute(query, Operation.SELECT);
+		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		
 		try {
 			return extractClientsOfAccount(rs);
@@ -63,7 +61,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 	public List<Account> findAll() {
 		
 		String sql = "SELECT * FROM account;";
-		ResultSet rs = mySQL.execute(sql, Operation.SELECT);
+		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractList(rs);
 	}
 
@@ -71,7 +69,8 @@ public class AccountRepositoryImpl implements AccountRepository {
 	public Optional<Account> findById(Integer id) {
 		
 		String sql = "SELECT * FROM account WHERE id = " + id + ";";
-		ResultSet rs = mySQL.execute(sql, Operation.SELECT);
+		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
+		
 		return extractObject(rs);
 	}
 
@@ -79,7 +78,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 	public Optional<Account> findByNib(String nib) {
 		
 		String sql = "SELECT * FROM account WHERE nib LIKE '" + nib + "';";
-		ResultSet rs = mySQL.execute(sql, Operation.SELECT);
+		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
 	}
 
@@ -87,7 +86,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 	public void deleteById(Integer id) {
 		
 		String sql = "DELETE FROM account WHERE id LIKE '" + id + "';";
-		mySQL.execute(sql, Operation.DELETE);
+		MySQL.execute(sql, Operation.DELETE);
 	}
 	
 	private List<Account> extractList(ResultSet rs) {
@@ -122,10 +121,12 @@ public class AccountRepositoryImpl implements AccountRepository {
 	
 	private Account buildObject(ResultSet rs) throws SQLException {
 
-		Account account = new Account();
+		Optional<Account> accountOptional = findById(rs.getInt(1));
+		Account account = accountOptional.get();
+		
 		account.setId(rs.getInt(1));
 		account.setNib(rs.getString(2));
-		account.setPrimaryOwnerId(rs.getInt(3));
+		account.setPrimaryOwner(account.getPrimaryOwner());
 		account.setBalance(rs.getDouble(4));
 		return account;
 	}

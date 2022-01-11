@@ -6,7 +6,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/bank-rdb-model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/bank-rdb-service"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bank-rdb-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bank-rdb-repository"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

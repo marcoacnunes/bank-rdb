@@ -36,7 +36,9 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public Account getById(Integer id) {
-		return accountRepository.findById(id).orElseThrow(() -> new ServiceException("Account with ID: " + id + " not found"));
+		Account acc = accountRepository.findById(id).orElseThrow(() -> new ServiceException("Account with ID: " + id + " not found"));
+		acc.getPrimaryOwner().getName();
+		return acc;
 	}
 
 	@Override

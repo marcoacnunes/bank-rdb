@@ -7,7 +7,7 @@ import pt.rumos.model.Card;
 
 public interface CardRepository {
 
-	Optional<Card> save(Card card, Integer accountId, Integer clientId);
+	Optional<Card> save(Card card);
 
     List<Card> findAll();
 

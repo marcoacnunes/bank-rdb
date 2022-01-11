@@ -6,8 +6,8 @@ public class Account {
 
     private Integer id;
     private String nib;
-    private Integer primaryOwnerId;
-    private ArrayList<Integer> secondaryOwnersId = new ArrayList<Integer>();
+    private Client primaryOwner;
+    private ArrayList<Client> secondaryOwners = new ArrayList<Client>();
     private Double balance = 0.00D;
     private ArrayList<String> transactions = new ArrayList<String>();
 
@@ -34,15 +34,7 @@ public class Account {
 	public void setNib(String nib) {
 		this.nib = nib;
 	}
-	
-	public Integer getPrimaryOwnerId() {
-		return primaryOwnerId;
-	}
-	
-	public void setPrimaryOwnerId(Integer primaryOwnerId) {
-		this.primaryOwnerId = primaryOwnerId;
-	}
-	
+
 	public Double getBalance() {
 		return balance;
 	}
@@ -51,17 +43,27 @@ public class Account {
 		this.balance = balance;
 	}
 
-	public ArrayList<Integer> getSecondaryOwnersId() {
-		return secondaryOwnersId;
+	public Client getPrimaryOwner() {
+		return primaryOwner;
 	}
 
-	public void setSecondaryOwnersId(ArrayList<Integer> secondaryOwnersId) {
-		this.secondaryOwnersId = secondaryOwnersId;
+	public void setPrimaryOwner(Client primaryOwner) {
+		this.primaryOwner = primaryOwner;
+	}
+
+	public ArrayList<Client> getSecondaryOwners() {
+		return secondaryOwners;
+	}
+
+	public void setSecondaryOwners(ArrayList<Client> secondaryOwners) {
+		this.secondaryOwners = secondaryOwners;
 	}
 
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", nib=" + nib + ", primaryOwnerId=" + primaryOwnerId + ", secondaryOwnersId="
-				+ secondaryOwnersId + ", balance=" + balance + "]";
+		return "Account [id=" + id + ", nib=" + nib + ", primaryOwner=" + primaryOwner + ", secondaryOwners="
+				+ secondaryOwners + ", balance=" + balance + ", transactions=" + transactions + "]";
 	}
+
+	
 }

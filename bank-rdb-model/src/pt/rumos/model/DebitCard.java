@@ -2,7 +2,7 @@ package pt.rumos.model;
 
 public class DebitCard extends Card {
 
-    private Double lastWithdrawal;
+    private Double lastWithdrawal = 0.00D;
 
 	public Double getLastWithdrawal() {
 		return lastWithdrawal;
@@ -14,7 +14,8 @@ public class DebitCard extends Card {
 
 	@Override
 	public String toString() {
-		return "DebitCard [lastWithdrawal=" + lastWithdrawal + ", Id=" + getId() + ", ClientId="
-				+ getClientId() + ", Pin=" + getPin() + ", AccountId=" + getAccountId() + "]";
+		return "DebitCard [lastWithdrawal=" + lastWithdrawal + ", getId()=" + getId() + ", getPin()=" + getPin()
+				+ ", getClient()=" + getClient() + ", getAccount()=" + getAccount() + "]";
 	}
+
 }

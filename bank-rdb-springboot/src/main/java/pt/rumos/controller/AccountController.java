@@ -21,7 +21,7 @@ import pt.rumos.service.AccountServiceImpl;
 public class AccountController {
 
 	private AccountService accountService = new AccountServiceImpl();
-
+	
 	@RequestMapping(value = "/account", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Account> getAll() throws Exception {
 		return accountService.getAll();

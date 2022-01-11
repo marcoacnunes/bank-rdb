@@ -85,7 +85,7 @@ public class AccountRepositoryListImpl implements AccountRepository {
     @Override
 	public Optional<Client> saveAccountClient(Client client, Account account) {
 		
-		account.getSecondaryOwnersId().add(client.getId());
+		account.getSecondaryOwners().add(client);
 		return Optional.of(client);
 	}
 

@@ -3,7 +3,7 @@ package pt.rumos.model;
 public class CreditCard extends Card {
 
     private Double plafond = 500.00;
-    private Integer dailyWithdrawals;
+    private Integer dailyWithdrawals = 0;
 
 	public Integer getDailyWithdrawals() {
 		return dailyWithdrawals;
@@ -23,11 +23,8 @@ public class CreditCard extends Card {
 
 	@Override
 	public String toString() {
-		return "CreditCard [plafond=" + plafond + ", dailyWithdrawals=" + dailyWithdrawals + ", Id=" + getId()
-				+ ", ClientId=" + getClientId() + ", Pin=" + getPin() + ", AccountId=" + getAccountId()
-				+ "]";
+		return "CreditCard [plafond=" + plafond + ", dailyWithdrawals=" + dailyWithdrawals + ", getId()=" + getId()
+				+ ", getPin()=" + getPin() + ", getClient()=" + getClient() + ", getAccount()=" + getAccount() + "]";
 	}
 
-	
-	
 }

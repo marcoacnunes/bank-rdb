@@ -3,9 +3,9 @@ package pt.rumos.model;
 public class Card {
 
     private Integer id;
-    private Integer clientId;
+    private Client client;
     private String pin;
-    private Integer accountId;
+    private Account account;
     
 	public Integer getId() {
 		return id;
@@ -15,14 +15,6 @@ public class Card {
 		this.id = id;
 	}
 	
-	public Integer getClientId() {
-		return clientId;
-	}
-	
-	public void setClientId(Integer clientId) {
-		this.clientId = clientId;
-	}
-	
 	public String getPin() {
 		return pin;
 	}
@@ -30,20 +22,28 @@ public class Card {
 	public void setPin(String pin) {
 		this.pin = pin;
 	}
-	
-	public Integer getAccountId() {
-		return accountId;
-	}
-	
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
+
+	public Client getClient() {
+		return client;
 	}
 
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	@Override
 	public String toString() {
-		return "Card [id=" + id + ", clientId=" + clientId + ", pin=" + pin + ", accountId=" + accountId + "]";
+		return "Card [id=" + id + ", client=" + client + ", pin=" + pin + ", account=" + account + "]";
 	}
-	
-	
-    
 
+
+	
 }
