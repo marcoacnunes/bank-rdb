@@ -90,7 +90,6 @@ public class Management {
 		Account account = new Account();
 		account.setPrimaryOwner(client);
 		account = accountService.save(account);
-		accountService.saveAccountClient(client, account);
 		
 		System.out.println("Account and Client created!");
 		System.out.println("Account ID: " + account.getId());
@@ -106,11 +105,9 @@ public class Management {
 		Client client = clientService.getByNif(nif);
 		Account account = new Account();
 		account.setPrimaryOwner(client);
-		
 		accountService.save(account);
 		System.out.println("Account Created!");
 		
-		accountService.saveAccountClient(client, account);
 	}
 	
 	private void listAllAccounts() {
@@ -253,7 +250,8 @@ public class Management {
 		Client client = askClientInfo();
 		client = clientService.save(client);
 		
-		accountService.saveAccountClient(client, account);
+		account.getSecondaryOwners().add(client);
+		accountService.saveSecondaryClient(account);
 		System.out.println("Secondary Owner created!");
 		System.out.println("Client ID: " + client.getId());
 		
@@ -265,7 +263,7 @@ public class Management {
 		int input = scan.nextInt();
 		
 		Account account = accountService.getById(input);
-		accountService.getAccountClients(account.getId()).forEach(System.out::println);
+		accountService.getSecondaryClients(account).forEach(System.out::println);
 	}
 
 	private void cardManagement() {

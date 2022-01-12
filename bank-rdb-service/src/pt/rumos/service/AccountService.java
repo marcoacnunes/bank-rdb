@@ -9,9 +9,9 @@ public interface AccountService {
  
     Account save(Account account);
     
-    Client saveAccountClient(Client client, Account account);
+    Client saveSecondaryClient(Account account);
     
-    List<Client> getAccountClients(Integer accountId);
+    List<Client> getSecondaryClients(Account account);
     	
     List<Account> getAll();
 

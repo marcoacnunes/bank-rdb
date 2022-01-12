@@ -28,7 +28,14 @@ public class AccountRepositoryImpl implements AccountRepository {
 	}
 	
 	@Override
-	public Optional<Client> saveAccountClient(Client client, Account account) {
+	public Optional<Client> saveSecondaryClient(Account account) {
+		
+		List<Client> secondaryClients = account.getSecondaryOwners();
+		Client client = new Client();
+		
+		if(!secondaryClients.isEmpty()) {
+			client = secondaryClients.get(secondaryClients.size() -1);
+		}
 		
 		String query = "INSERT INTO account_client (account_id, client_id)"
 					+ " VALUES ('"	+ account.getId() 			+ "', '" 
@@ -40,11 +47,11 @@ public class AccountRepositoryImpl implements AccountRepository {
 	}
 	
 	@Override
-	public List<Client> findAccountClients(Integer accountId) {
+	public List<Client> findSecondaryClients(Account account) {
 		
 		String query = "SELECT c.id, c.name, c.nif, c.password, c.date_of_birth, c.phone, c.mobile, c.email, c.occupation FROM account_client AS ac "
 			+	"JOIN client AS c ON ac.client_id = c.id "
-			+	"WHERE ac.account_id = " + accountId + ";";
+			+	"WHERE ac.account_id = " + account.getId() + ";";
 		
 		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		

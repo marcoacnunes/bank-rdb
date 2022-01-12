@@ -83,15 +83,22 @@ public class AccountRepositoryListImpl implements AccountRepository {
     }
 
     @Override
-	public Optional<Client> saveAccountClient(Client client, Account account) {
+	public Optional<Client> saveSecondaryClient(Account account) {
+		
+    	List<Client> secondaryClients = account.getSecondaryOwners();
+		Client client = new Client();
+		
+		if(!secondaryClients.isEmpty() && (secondaryClients.size() -1) != 4) {
+			client = secondaryClients.get(secondaryClients.size() -1);
+		}
 		
 		account.getSecondaryOwners().add(client);
 		return Optional.of(client);
 	}
 
     @Override
-	public List<Client> findAccountClients(Integer accountId) {
-		return null; //not thought-out yet
+	public List<Client> findSecondaryClients(Account account) {
+		return account.getSecondaryOwners(); 
 	}
 }
 

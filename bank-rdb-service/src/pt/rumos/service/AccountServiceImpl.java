@@ -1,6 +1,7 @@
 package pt.rumos.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import pt.rumos.exception.ServiceException;
@@ -20,13 +21,17 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
     @Override
-    public Client saveAccountClient(Client client, Account account) {
-    	return accountRepository.saveAccountClient(client, account).orElseThrow(() -> new ServiceException("There was a problem saving Client"));
+    public Client saveSecondaryClient(Account account) {
+    	
+    	List<Client> secondaryClients = getSecondaryClients(account);
+    	if((secondaryClients.size() -1) == 4) throw new ServiceException("Number of Secondary Clients of this Account has been reached!");
+    	
+    	return accountRepository.saveSecondaryClient(account).orElseThrow(() -> new ServiceException("There was a problem saving Client"));
     }
     
     @Override
-    public List<Client> getAccountClients(Integer accountId) {
-    	return accountRepository.findAccountClients(accountId);
+    public List<Client> getSecondaryClients(Account account) {
+    	return accountRepository.findSecondaryClients(account);
     }
 	
 	@Override
@@ -48,24 +53,26 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public void deleteById(Integer id) {
+		getById(id);
 		accountRepository.deleteById(id);
 	}
 
 	private String generateAndCheckIfUniqueNib() {
 		
-		Random random = new Random();
-		String nib = String.format("%06d", random.nextInt(1000000));
-
 		boolean nibExists = false;
+		String nib;
 		
 		do {
-			for(Account account : accountRepository.findAll()) {
-				
-				if(account.getNib().equals(nib)){
-					nibExists = true;
-				}
-			}	
-		}while(nibExists);
+			Random random = new Random();
+			nib = String.format("%06d", random.nextInt(1000000));
+			
+			Optional<Account> existingAccount = accountRepository.findByNib(nib);
+			
+			if(existingAccount.isPresent()) {
+				nibExists = true;
+			}
+		} while (nibExists);
+
 		return nib;
 	}
 }

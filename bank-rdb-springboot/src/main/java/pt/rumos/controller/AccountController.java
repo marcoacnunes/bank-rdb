@@ -32,9 +32,9 @@ public class AccountController {
 		return accountService.getById(id);
 	}
 	
-	@RequestMapping(value = "/account/{id}/clients", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Client> getClientsByAccountId(@PathVariable Integer accountId) throws Exception {
-		return accountService.getAccountClients(accountId);
+	@RequestMapping(value = "/account/{id}/secondary", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Client> getClientsByAccountId(@PathVariable Account account) throws Exception {
+		return accountService.getSecondaryClients(account);
 	}
 
 	@RequestMapping(value = "/account", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
