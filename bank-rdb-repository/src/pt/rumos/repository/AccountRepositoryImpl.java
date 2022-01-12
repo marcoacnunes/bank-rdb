@@ -68,10 +68,40 @@ public class AccountRepositoryImpl implements AccountRepository {
 	@Override
 	public Optional<Account> findById(Integer id) {
 		
-		String sql = "SELECT * FROM account WHERE id = " + id + ";";
+		String sql = "Select * from account "
+				+ "INNER JOIN client ON account.primary_owner_id = client.id "
+				+ "where account.id = " + id + ";";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		
-		return extractObject(rs);
+		
+		
+		try {
+			if(rs.next()) {
+				Account account = new Account();
+				account.setId(rs.getInt(1));
+				account.setNib(rs.getString(2));
+				//rs.getInt(3) é igual ao id do client & rs.getInt(5)
+				account.setBalance(rs.getDouble(4));
+				Client primaryOwner = new Client();
+				primaryOwner.setId(rs.getInt(5));
+				primaryOwner.setName(rs.getString(6));
+				primaryOwner.setNif(rs.getString(7));;
+				primaryOwner.setPassword(rs.getString(8));;
+				primaryOwner.setDateOfBirth(rs.getDate(9).toLocalDate());
+				primaryOwner.setPhone(rs.getString(10));
+				primaryOwner.setMobile(rs.getString(11));
+				primaryOwner.setEmail(rs.getString(12));
+				primaryOwner.setOccupation(rs.getString(13));
+				account.setPrimaryOwner(primaryOwner);
+				
+				return Optional.of(account);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Optional.empty();
 	}
 
 	@Override
@@ -120,16 +150,20 @@ public class AccountRepositoryImpl implements AccountRepository {
 	}
 	
 	private Account buildObject(ResultSet rs) throws SQLException {
-
-		Optional<Account> accountOptional = findById(rs.getInt(1));
-		Account account = accountOptional.get();
+		
+		Account account = new Account();
 		
 		account.setId(rs.getInt(1));
 		account.setNib(rs.getString(2));
-		account.setPrimaryOwner(account.getPrimaryOwner());
+		
+		Client client = new Client();
+		client.setId(rs.getInt(3));
+		account.setPrimaryOwner(client);
 		account.setBalance(rs.getDouble(4));
 		return account;
 	}
+	
+
 	
 	private List<Client> extractClientsOfAccount(ResultSet rs) throws SQLException {
 		

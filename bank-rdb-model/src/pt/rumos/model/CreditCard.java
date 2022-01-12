@@ -3,7 +3,7 @@ package pt.rumos.model;
 public class CreditCard extends Card {
 
     private Double plafond = 500.00;
-    private Integer dailyWithdrawals = 0;
+    private Integer dailyWithdrawals;
 
 	public Integer getDailyWithdrawals() {
 		return dailyWithdrawals;

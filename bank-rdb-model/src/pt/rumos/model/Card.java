@@ -38,12 +38,10 @@ public class Card {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Card [id=" + id + ", client=" + client + ", pin=" + pin + ", account=" + account + "]";
 	}
-
-
 	
 }

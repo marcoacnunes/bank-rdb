@@ -2,7 +2,7 @@ package pt.rumos.model;
 
 public class DebitCard extends Card {
 
-    private Double lastWithdrawal = 0.00D;
+    private Double lastWithdrawal;
 
 	public Double getLastWithdrawal() {
 		return lastWithdrawal;

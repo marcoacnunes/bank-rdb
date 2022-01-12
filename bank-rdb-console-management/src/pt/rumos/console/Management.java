@@ -314,6 +314,8 @@ public class Management {
 		
 		Client client = clientService.getByNif(nif);
 		CreditCard creditCard = new CreditCard();
+		creditCard.setAccount(account);
+		creditCard.setClient(client);
 		cardService.save(creditCard);
 	}
 	
@@ -329,6 +331,8 @@ public class Management {
 		
 		Client client = clientService.getByNif(nif);
 		DebitCard debitCard = new DebitCard();
+		debitCard.setAccount(account);
+		debitCard.setClient(client);
 		cardService.save(debitCard);
 	}
 	
