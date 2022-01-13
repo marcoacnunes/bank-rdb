@@ -10,8 +10,6 @@ public interface AccountRepository {
 
     Optional<Account> save(Account account);
     
-    Optional<Client> saveSecondaryClient(Account account);
-    
     List<Client> findSecondaryClients(Account account);
 
     List<Account> findAll();
@@ -21,5 +19,4 @@ public interface AccountRepository {
     Optional<Account> findByNib(String nib);
 
     void deleteById(Integer id);
-
 }

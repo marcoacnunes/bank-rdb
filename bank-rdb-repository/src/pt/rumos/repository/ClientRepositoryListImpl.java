@@ -13,7 +13,6 @@ public class ClientRepositoryListImpl implements ClientRepository {
 
 	@Override
 	public Optional<Client> save(Client client) {
-
 		if(client.getId() != null) {
 			return update(client);
 		}else {
@@ -22,7 +21,6 @@ public class ClientRepositoryListImpl implements ClientRepository {
 	}
 	
 	private Optional<Client> create(Client client) {
-		
 		clients.add(client);
 		client.setId(id);
 		id++;
@@ -31,9 +29,7 @@ public class ClientRepositoryListImpl implements ClientRepository {
 	}
 	
 	private Optional<Client> update(Client client) { 				
-		
 		Optional<Client> clientOpt = findByNif(client.getNif());
-		
 		Client existingClient = clientOpt.get();
 		existingClient = client;
 		
@@ -59,9 +55,7 @@ public class ClientRepositoryListImpl implements ClientRepository {
 
 	@Override
 	public Optional<Client> findByNif(String nif) {
-
 		for (Client client : clients) {
-
 			if (client.getNif().equals(nif)) {
 				return Optional.of(client);
 			}
@@ -71,12 +65,10 @@ public class ClientRepositoryListImpl implements ClientRepository {
 
 	@Override
 	public void deleteByNif(String nif) {
-	
 		Optional<Client> client = findByNif(nif);
 		
 		if(client.isPresent()) {
 			clients.remove(client.get());
 		}
 	}
-
 }

@@ -25,7 +25,6 @@ public class Management {
 	}
 
 	public void run() {
-
 		int choice = 0;
 		
 		do {
@@ -49,11 +48,9 @@ public class Management {
 					break;
 			}
 		}while(choice != 0);
-
 	}
 
 	private void accountManagement() { 
-		
 		int choice = 0;
 		
 		do {
@@ -83,7 +80,6 @@ public class Management {
 	}
 	
 	private void createAccount() {
-		
 		Client client = askClientInfo();
 		client = clientService.save(client);
 		
@@ -98,16 +94,14 @@ public class Management {
 	}
 	
 	private void createAccountWithExistingClient() {
-
 		System.out.println("Type Client NIF: ");
 		String nif = scan.next();
-		
 		Client client = clientService.getByNif(nif);
+		
 		Account account = new Account();
 		account.setPrimaryOwner(client);
 		accountService.save(account);
 		System.out.println("Account Created!");
-		
 	}
 	
 	private void listAllAccounts() {
@@ -115,14 +109,12 @@ public class Management {
 	}
 		
 	private void deleteAccount() {
-			
 		System.out.println("Type Account ID to delete: ");
 		int id = scan.nextInt();
 		accountService.deleteById(id);
 	}
 	
 	private void clientManagement() {
-		
 		int choice = 0;
 		
 		do {
@@ -133,7 +125,6 @@ public class Management {
 			System.out.println("4. Delete client by nif");
 			System.out.println("5. Create Secondary Client of an Account");
 			System.out.println("6. List all Owners of an account");
-			
 			choice = scan.nextInt();
 			
 			switch (choice) {
@@ -162,22 +153,18 @@ public class Management {
 	}
 	
 	private void listAllClients() {
-		
 		clientService.getAll().forEach(System.out::println);
 	}
 	
 	private void findClientByNif() {
-		
 		System.out.println("Type NIF to find client: ");
 		String nif = scan.next();
 		System.out.println(clientService.getByNif(nif).toString());
 	}
 	
 	private void updateClient() {
-		
 		System.out.print("Enter client nif to update: ");
 		String nif = scan.next();
-		
 		Client client = clientService.getByNif(nif);
 		
 		System.out.println("1. Update name ");
@@ -188,7 +175,6 @@ public class Management {
 		System.out.println("6. Update email");
 		System.out.println("7. Update occupation");
 		System.out.print("Enter option: ");
-		
 		int option = scan.nextInt();
 		scan.nextLine();
 
@@ -233,7 +219,6 @@ public class Management {
 	}
 	
 	private void deleteClient() {
-
 		System.out.print("Enter client nif to delete: ");
 		String nif = scan.next();
 		
@@ -242,7 +227,6 @@ public class Management {
 	}
 	
 	private void createSecondaryOwner() {
-
 		System.out.println("Type Account ID: ");
 		int id = scan.nextInt();
 		Account account = accountService.getById(id);
@@ -251,23 +235,19 @@ public class Management {
 		client = clientService.save(client);
 		
 		account.getSecondaryOwners().add(client);
-		accountService.saveSecondaryClient(account);
+		accountService.save(account);
 		System.out.println("Secondary Owner created!");
 		System.out.println("Client ID: " + client.getId());
-		
 	}
 	
 	private void listAccountClients() {
-		
 		System.out.println("Type Account ID: ");
 		int input = scan.nextInt();
-		
 		Account account = accountService.getById(input);
 		accountService.getSecondaryClients(account).forEach(System.out::println);
 	}
 
 	private void cardManagement() {
-		
 		int choice = 0;
 		
 		do {
@@ -301,16 +281,14 @@ public class Management {
 	}
 	
 	private void createCreditCard() {
-
 		System.out.println("Type Account ID to create Credit Card: ");
 		int id = scan.nextInt();
-		
 		Account account = accountService.getById(id);
-
+		
 		System.out.println("Type Client Nif to create Credit Card: ");
 		String nif = scan.next();
-		
 		Client client = clientService.getByNif(nif);
+		
 		CreditCard creditCard = new CreditCard();
 		creditCard.setAccount(account);
 		creditCard.setClient(client);
@@ -318,16 +296,14 @@ public class Management {
 	}
 	
 	private void createDebitCard() {
-		
 		System.out.println("Type Account ID to create Debit Card: ");
 		int id = scan.nextInt();
-		
 		Account account = accountService.getById(id);
-			
+		
 		System.out.println("Type Client Nif to create Debit Card: ");
 		String nif = scan.next();
-		
 		Client client = clientService.getByNif(nif);
+		
 		DebitCard debitCard = new DebitCard();
 		debitCard.setAccount(account);
 		debitCard.setClient(client);
@@ -335,35 +311,30 @@ public class Management {
 	}
 	
 	private void cancelCreditCard() {
-		
 		System.out.println("Type Client NIF to delete Credit Card: ");
 		String nif = scan.next();
-		
 		Client client = clientService.getByNif(nif);
+		
 		Card card = cardService.getByClientId(client.getId());
 		cardService.deleteById(card.getId());
 	}
 	
 	private void cancelDebitCard() {
-		
 		System.out.println("Type Client NIF to delete Debit Card: ");
 		String nif = scan.next();
-		
 		Client client = clientService.getByNif(nif);
+		
 		Card card = cardService.getByClientId(client.getId());
 		cardService.deleteById(card.getId());
 	}
 	
 	private void listAllCards() {
-
 		cardService.getAll().forEach(System.out::println);
 	}
 
 	private Client askClientInfo() {
-
 		Client client = new Client();
 		System.out.println("Enter required client info.");
-
 		System.out.println("Name: ");
 		String name = scan.next();
 		client.setName(name);
@@ -373,11 +344,9 @@ public class Management {
 		client.setPassword(password);
 
 	 	System.out.print("Date of birth (yyyy-MM-dd): ");
-	
 		try {
 			LocalDate dob = LocalDate.parse(scan.next());
 			client.setDateOfBirth(dob);
-			
 		}catch (Exception e) {
 			System.out.println("Wrong input. Try again");
 			askClientInfo();
@@ -405,5 +374,4 @@ public class Management {
 		
 		return client;
 	}	
-
 }

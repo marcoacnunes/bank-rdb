@@ -1,17 +1,18 @@
 package pt.rumos.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Account {
 
     private Integer id;
     private String nib;
-    private Client primaryOwner;
-    private ArrayList<Client> secondaryOwners = new ArrayList<Client>();
+    private Client primaryOwner = new Client();
+    private List<Client> secondaryOwners = new ArrayList<Client>();
     private Double balance = 0.00D;
-    private ArrayList<String> transactions = new ArrayList<String>();
+    private List<String> transactions = new ArrayList<String>();
 
-	public ArrayList<String> getTransactions() {
+	public List<String> getTransactions() {
 		return transactions;
 	}
 
@@ -51,7 +52,7 @@ public class Account {
 		this.primaryOwner = primaryOwner;
 	}
 
-	public ArrayList<Client> getSecondaryOwners() {
+	public List<Client> getSecondaryOwners() {
 		return secondaryOwners;
 	}
 

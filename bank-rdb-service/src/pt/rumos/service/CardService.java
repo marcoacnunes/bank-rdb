@@ -16,5 +16,4 @@ public interface CardService {
     Card getByAccountId(Integer accountId);
 
     void deleteById(Integer id);
-    
 }

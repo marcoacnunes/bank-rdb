@@ -16,19 +16,12 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public Account save(Account account) {
-		account.setNib(generateAndCheckIfUniqueNib());
+		if(account.getId() == null) {
+			account.setNib(generateAndCheckIfUniqueNib());
+		}
 		return accountRepository.save(account).orElseThrow(() -> new ServiceException("There was a problem while saving Account."));
 	}
 	
-    @Override
-    public Client saveSecondaryClient(Account account) {
-    	
-    	List<Client> secondaryClients = getSecondaryClients(account);
-    	if((secondaryClients.size() -1) == 4) throw new ServiceException("Number of Secondary Clients of this Account has been reached!");
-    	
-    	return accountRepository.saveSecondaryClient(account).orElseThrow(() -> new ServiceException("There was a problem saving Client"));
-    }
-    
     @Override
     public List<Client> getSecondaryClients(Account account) {
     	return accountRepository.findSecondaryClients(account);
@@ -41,9 +34,7 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public Account getById(Integer id) {
-		Account acc = accountRepository.findById(id).orElseThrow(() -> new ServiceException("Account with ID: " + id + " not found"));
-		acc.getPrimaryOwner().getName();
-		return acc;
+		return accountRepository.findById(id).orElseThrow(() -> new ServiceException("Account with ID: " + id + " not found"));
 	}
 
 	@Override
@@ -58,7 +49,6 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	private String generateAndCheckIfUniqueNib() {
-		
 		boolean nibExists = false;
 		String nib;
 		
@@ -72,7 +62,6 @@ public class AccountServiceImpl implements AccountService{
 				nibExists = true;
 			}
 		} while (nibExists);
-
 		return nib;
 	}
 }

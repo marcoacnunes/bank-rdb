@@ -16,7 +16,6 @@ public class CardRepositoryListImpl implements CardRepository {
 	
 	@Override
 	public Optional<Card> save(Card card) {
-		
 		if(card.getClass().equals(CreditCard.class)) {
 			return setCreditCard(card);
 			
@@ -27,9 +26,7 @@ public class CardRepositoryListImpl implements CardRepository {
 	}
 
 	private Optional<Card> setCreditCard(Card card) {
-		
 		CreditCard creditCard = (CreditCard) card;
-		
 		creditCard.setId(id);
 		id++;
 		creditCard.setPlafond(1000.00D);
@@ -42,14 +39,11 @@ public class CardRepositoryListImpl implements CardRepository {
 		System.out.println("Credit Card ID is: " + creditCard.getId());
 		System.out.println("Credit Card Plafond is: " + creditCard.getPlafond());
 	    System.out.println("Credit Card Created! Your PIN number for this Credit Card is: " + creditCard.getPin());
-
 		return Optional.of(creditCard);
 	}
 	
 	public Optional<Card> setDebitCard(Card card) {
-		
 		DebitCard debitCard = (DebitCard) card;
-		
 		debitCard.setId(id);
 		id++; 
 		
@@ -60,7 +54,6 @@ public class CardRepositoryListImpl implements CardRepository {
 		
 		System.out.println("Your DebitCard id is: " + debitCard.getId());
 		System.out.println("Debit Card Created! Your PIN number for this Debit Card is: " + debitCard.getPin());
-		
 		return Optional.of(debitCard);	
 	}
 
@@ -71,9 +64,7 @@ public class CardRepositoryListImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> findById(Integer id) {
-		
 		for(Card card : cards) {
-			
 			if(card.getId().equals(id)) {
 				return Optional.of(card);
 			}
@@ -83,9 +74,7 @@ public class CardRepositoryListImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> findByClientId(Integer clientId) {
-		
 		for(Card card : cards) {
-			
 			if(card.getClient().getId().equals(clientId)) {
 				return Optional.of(card);
 			}
@@ -95,9 +84,7 @@ public class CardRepositoryListImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> findByAccountId(Integer accountId) {
-		
 		for(Card card : cards) {
-			
 			if(card.getAccount().getId().equals(accountId)) {
 				return Optional.of(card);
 			}
@@ -107,13 +94,11 @@ public class CardRepositoryListImpl implements CardRepository {
 
 	@Override
 	public void deleteById(Integer id) {
-
 		Optional<Card> card = findById(id);
 		
 		if(card.isPresent()) {
 			cards.remove(card.get());
 		}
 	}
-
 }
 

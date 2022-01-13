@@ -13,7 +13,6 @@ import pt.rumos.service.ClientServiceImpl;
 public class Main {
 	
 	public static void main(String[] args){
-		
 		ClientService clientService = new ClientServiceImpl();
 		AccountService accountService = new AccountServiceImpl();
 		CardService cardService = new CardServiceImpl();
@@ -48,5 +47,4 @@ public class Main {
 		System.out.println("1. Management");
 		System.out.println("2. ATM");
 	}
-
 }

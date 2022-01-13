@@ -20,6 +20,4 @@ public interface AtmService {
 	void deposit(Account account);
 
 	void payPlafond(Account account, CreditCard creditCard, Double valueInputPlafond);
-
-
 }

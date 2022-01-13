@@ -16,6 +16,4 @@ public interface ClientRepository {
     Optional<Client> findByNif(String nif);
 
     void deleteByNif(String nif);
-    
-
 }

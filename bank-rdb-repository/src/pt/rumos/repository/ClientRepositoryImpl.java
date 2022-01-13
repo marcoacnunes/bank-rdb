@@ -16,9 +16,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 	
 	@Override
 	public Optional<Client> save(Client client) {
-		
 		if(client.getId() == null) {
-		
 			String sql = "INSERT INTO client (name, nif, password,"
 					+ " date_of_birth, phone, mobile, email, occupation)"
 					+ " VALUES ('" 	+ client.getName() 			+ "', '" 
@@ -40,7 +38,6 @@ public class ClientRepositoryImpl implements ClientRepository {
 	}
 
 	public Optional<Client> update(Client client) {
-		
 		String query = "UPDATE client SET "
 					+ "name 			= '" + client.getName()		 	+ "', "
 					+ "nif 				= '" + client.getNif()		 	+ "', "
@@ -58,7 +55,6 @@ public class ClientRepositoryImpl implements ClientRepository {
 	
 	@Override
 	public List<Client> findAll() {
-		
 		String query = "SELECT * FROM client;";
 		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		return extractList(rs);
@@ -66,7 +62,6 @@ public class ClientRepositoryImpl implements ClientRepository {
 	
 	@Override
 	public Optional<Client> findById(Integer id) {
-
 		String query = "SELECT * FROM client WHERE id =" + id + ";";
 		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		return extractObject(rs);
@@ -74,7 +69,6 @@ public class ClientRepositoryImpl implements ClientRepository {
 
 	@Override
 	public Optional<Client> findByNif(String nif) {
-
 		String query = "SELECT * FROM client WHERE nif LIKE '" + nif + "';";
 		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		return extractObject(rs);
@@ -82,13 +76,11 @@ public class ClientRepositoryImpl implements ClientRepository {
 
 	@Override
 	public void deleteByNif(String nif) {
-	
 		String sql = "DELETE FROM client WHERE nif LIKE '" + nif + "';";
 		MySQL.execute(sql, Operation.DELETE);
 	}
 	
 	private List<Client> extractList(ResultSet rs) {
-		
 		List<Client> clients = new ArrayList<Client>();
 		
 		try {
@@ -104,7 +96,6 @@ public class ClientRepositoryImpl implements ClientRepository {
 	}
 
 	private Optional<Client> extractObject(ResultSet rs) {
-
 		try {
 			if(rs.next()) {
 				Client client = buildObject(rs);
@@ -117,20 +108,16 @@ public class ClientRepositoryImpl implements ClientRepository {
 	}
 	
 	private Client buildObject(ResultSet rs) throws SQLException {
-
 		Client client = new Client();
 		client.setId(rs.getInt(1));
 		client.setName(rs.getString(2));
 		client.setNif(rs.getString(3));
 		client.setPassword(rs.getString(4));
-		if(rs.getDate(5) != null) {
-			client.setDateOfBirth(rs.getDate(5).toLocalDate());
-		}
+		client.setDateOfBirth(rs.getDate(5).toLocalDate());
 		client.setPhone(rs.getString(6));
 		client.setMobile(rs.getString(7));
 		client.setEmail(rs.getString(8));
 		client.setOccupation(rs.getString(9));
 		return client;
 	}
-
 }

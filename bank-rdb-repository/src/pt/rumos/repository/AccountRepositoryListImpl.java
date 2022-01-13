@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import pt.rumos.database.MySQL;
+import pt.rumos.database.Operation;
 import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 
@@ -15,26 +17,30 @@ public class AccountRepositoryListImpl implements AccountRepository {
     
     @Override
     public Optional<Account> save(Account account) {
-    	
-		account.setId(id);
-		id++;
-		account.setNib(generateAndCheckIfUniqueNib());
-		System.out.println("Account NIB is: " + account.getNib());
-		accounts.add(account);
+    	if(account.getId() == null) {
+    		account.setId(id);
+			id++;
+			account.setNib(generateAndCheckIfUniqueNib());
+			System.out.println("Account NIB is: " + account.getNib());
+			accounts.add(account);
 			
 		return Optional.of(account);
+		
+    	} else {
+    		for (Client secondary : account.getSecondaryOwners()) {
+                ///////////
+    		}
+    		return findById(id);
+    	}
     }
     
 	private String generateAndCheckIfUniqueNib() {
-		
 		Random random = new Random();
 		String nib = String.format("%06d", random.nextInt(1000000));
-
 		boolean nibExists = false;
 		
 		do {
 			for(Account account : findAll()) {
-				
 				if(account.getNib().equals(nib)){
 					nibExists = true;
 				}
@@ -50,9 +56,7 @@ public class AccountRepositoryListImpl implements AccountRepository {
 
     @Override
     public Optional<Account> findById(Integer id) {
-		
     	for (Account account : accounts) {
-		    
 			if (account.getId().equals(id)) {
 				return Optional.of(account);
 			}
@@ -62,7 +66,6 @@ public class AccountRepositoryListImpl implements AccountRepository {
 
     @Override
     public Optional<Account> findByNib(String nib) {
-    	
     	for (Account account : accounts) {
 		    
 			if (account.getNib().equals(nib)) {
@@ -74,27 +77,12 @@ public class AccountRepositoryListImpl implements AccountRepository {
 
     @Override
     public void deleteById(Integer id) {
-    	
     	Optional<Account> account = findById(id);
 			
 		if(account.isPresent()) {
 			accounts.remove(account.get());
 		}
     }
-
-    @Override
-	public Optional<Client> saveSecondaryClient(Account account) {
-		
-    	List<Client> secondaryClients = account.getSecondaryOwners();
-		Client client = new Client();
-		
-		if(!secondaryClients.isEmpty() && (secondaryClients.size() -1) != 4) {
-			client = secondaryClients.get(secondaryClients.size() -1);
-		}
-		
-		account.getSecondaryOwners().add(client);
-		return Optional.of(client);
-	}
 
     @Override
 	public List<Client> findSecondaryClients(Account account) {

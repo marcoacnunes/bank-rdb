@@ -15,6 +15,4 @@ public interface ClientService {
     Client getByNif(String nif);
 
     void deleteByNif(String nif);
-
-	
 }

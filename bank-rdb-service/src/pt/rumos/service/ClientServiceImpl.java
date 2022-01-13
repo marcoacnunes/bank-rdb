@@ -13,15 +13,14 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client save(Client client) {
-    	
     	if (client.getName() == null || client.getName().isBlank()) throw new ServiceException("Client name cannot be null");
     	if (client.getNif() == null || client.getNif().isBlank()) throw new ServiceException("Client nif cannot be null");
-//    	if (client.getPassword() == null || client.getPassword().isBlank()) throw new ServiceException("Client password cannot be null");
-//    	if (client.getDob() == null) throw new ServiceException("Client date of birth cannot be null");
-//    	if (client.getPhone() == null || client.getPhone().isBlank()) throw new ServiceException("Client phone cannot be null");
-//    	if (client.getMobile() == null || client.getMobile().isBlank()) throw new ServiceException("Client mobile cannot be null");
-//    	if (client.getEmail() == null || client.getEmail().isBlank()) throw new ServiceException("Client email cannot be null");
-//    	if (client.getOccupation() == null || client.getOccupation().isBlank()) throw new ServiceException("Client occupation cannot be null");
+    	if (client.getPassword() == null || client.getPassword().isBlank()) throw new ServiceException("Client password cannot be null");
+    	if (client.getDateOfBirth() == null) throw new ServiceException("Client date of birth cannot be null");
+    	if (client.getPhone() == null || client.getPhone().isBlank()) throw new ServiceException("Client phone cannot be null");
+    	if (client.getMobile() == null || client.getMobile().isBlank()) throw new ServiceException("Client mobile cannot be null");
+    	if (client.getEmail() == null || client.getEmail().isBlank()) throw new ServiceException("Client email cannot be null");
+    	if (client.getOccupation() == null || client.getOccupation().isBlank()) throw new ServiceException("Client occupation cannot be null");
 
     	return clientRepository.save(client).orElseThrow(() -> new ServiceException("There was a problem while saving Client."));
     }
@@ -45,6 +44,4 @@ public class ClientServiceImpl implements ClientService {
     public void deleteByNif(String nif) {
     	clientRepository.deleteByNif(nif);
     }
-
-
 }

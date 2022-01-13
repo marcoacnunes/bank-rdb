@@ -13,7 +13,6 @@ public class AtmServiceImpl implements AtmService {
 	private CardService cardService;
     
 	public String checkCardPin(Card card) {
-		
 		System.out.println("Insert PIN code: ");
 		String pin = scan.next();
 
@@ -26,11 +25,8 @@ public class AtmServiceImpl implements AtmService {
 
 	@Override
 	public Card displayCreditCards(Client client) {
-		
 		for (Card card : cardService.getAll()) {
-			
 			if (card.getClass().equals(CreditCard.class) &&  card.getClient().getId().equals(client.getId())) {
-				   
 				System.out.println("ID: " + card.getId() + " - CreditCard Available");
 				return card;
 			}
@@ -40,11 +36,8 @@ public class AtmServiceImpl implements AtmService {
 	
 	@Override
 	public Card displayDebitCards(Client client) {
-		
 		for (Card card : cardService.getAll()) {
-			
 			if (card.getClass().equals(DebitCard.class) &&  card.getClient().getId().equals(client.getId())) {
-				   
 				System.out.println();
 				System.out.println("ID: " + card.getId() + " - DebitCard Available");
 				return card;
@@ -55,7 +48,6 @@ public class AtmServiceImpl implements AtmService {
 	
 	@Override
 	public void transfer(Account account, Account receivingAccount) {
-		
 		System.out.println("\nType value that you wish to transfer to Account ID: " + receivingAccount.getId());
 		Double valueInput = scan.nextDouble();
 		
@@ -73,7 +65,6 @@ public class AtmServiceImpl implements AtmService {
 
 		account.setBalance(account.getBalance() - valueInput);
 		receivingAccount.setBalance(receivingAccount.getBalance() + valueInput);
-
 		System.out.println("Transfer Completed! This Account balance is now: " + account.getBalance() + " And Account with ID: "
 							+ receivingAccount.getId() + " balance is now: " + receivingAccount.getBalance());
 
@@ -82,9 +73,7 @@ public class AtmServiceImpl implements AtmService {
 	
     @Override
     public void withdraw(Account account, Card card){
-    	
     	if (card.getClass().equals(CreditCard.class)) {
-
 			System.out.println("Do you wish to withdraw from CreditCard Plafond? (Cash-Advance) Y/N: ");
 			String choice = scan.next();
 
@@ -100,18 +89,14 @@ public class AtmServiceImpl implements AtmService {
     }
     
     private void normalWithdrawal(Account account, Card card) {
-			
 		DebitCard debitCard = (DebitCard) card;
-		
 		System.out.println("Type the value that you want to withdrawal: ");
 		double valueInput = scan.nextDouble();
 		
 		if (account.getBalance() <= 0) {
 			throw new RuntimeException("Sir you have insufficient funds");
-
 		} else if (account.getBalance() < valueInput) {
 			throw new RuntimeException("You have " + account.getBalance() + ". Cannot transfer specified value");
-
 		} else {
 			account.setBalance(account.getBalance() - valueInput);
 			debitCard.setLastWithdrawal(valueInput);
@@ -120,15 +105,12 @@ public class AtmServiceImpl implements AtmService {
 	}
 	
 	private void withdrawCreditCardPlafond(Account account, Card card) {
-		
 		CreditCard creditCard = (CreditCard) card;
-		
 		System.out.println("\nType the value that you want to withdraw: ");
 		double valueInput = scan.nextDouble();
 
 		if (valueInput > creditCard.getPlafond()) {
 			throw new RuntimeException("Input value is greater than current Credit Card Plafond");
-			
 		} else {
 			creditCard.setPlafond(creditCard.getPlafond() - valueInput);
 			creditCard.setDailyWithdrawals(creditCard.getDailyWithdrawals() + 1);
@@ -138,7 +120,6 @@ public class AtmServiceImpl implements AtmService {
 
 	@Override
     public void deposit(Account account) {
-    	
     	System.out.println("Type the value that you want to deposit: ");
 		double value = scan.nextDouble();
 		
@@ -160,27 +141,21 @@ public class AtmServiceImpl implements AtmService {
 		if (valueInputPlafond > creditCard.getPlafond()) {
 			throw new RuntimeException("Value input exceeds amount needed to pay Plafond");
 		}
-		
 		plafondPayment(creditCard, account, valueInputPlafond);
-		
 	}
 	
 	private void plafondPayment(CreditCard creditCard, Account account, Double valueInputPlafond) {
-		
 		Double balanceTest = account.getBalance() - valueInputPlafond;
 		Double plafondTest = creditCard.getPlafond() + valueInputPlafond;
 	
 		if (balanceTest >= 0) {
-			
 			if (plafondTest <= 1000.00) {
 				account.setBalance(account.getBalance() - valueInputPlafond);
 				creditCard.setPlafond(creditCard.getPlafond() + valueInputPlafond);
 				System.out.println("Payment Done!");
-
 			} else {
 				throw new RuntimeException("Value input exceeds amount needed to pay Plafond");
 			}
-			
 		} else {
 			throw new RuntimeException("Cannot do this payment as it would set Account balance to negative");
 		}

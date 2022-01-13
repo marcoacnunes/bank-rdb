@@ -19,7 +19,6 @@ public class CardRepositoryImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> save(Card card) {
-
 		CreditCard creditCard = null;
 		DebitCard debitCard = null;
 		String sql = null;
@@ -27,9 +26,13 @@ public class CardRepositoryImpl implements CardRepository {
 		if (card.getClass().equals(CreditCard.class)) {
 
 			creditCard = (CreditCard) card;
-			sql = "INSERT INTO card (client_id, pin, account_id, plafond, daily_withdrawals) VALUES ('"
-					+ card.getClient().getId() + "', '" + card.getPin() + "', '" + card.getAccount().getId() + "', '"
-					+ creditCard.getPlafond() + "', '" + creditCard.getDailyWithdrawals() + "');";
+			sql = "INSERT INTO card (client_id, pin, account_id, plafond, daily_withdrawals) "
+					+ "VALUES ('" 	+ card.getClient().getId() 			+ "', '" 
+									+ card.getPin() 		   			+ "', '" 
+									+ card.getAccount().getId() 		+ "', '"
+									+ creditCard.getPlafond() 			+ "', '" 
+									+ creditCard.getDailyWithdrawals() 	+ "');";
+			
 			MySQL.execute(sql, Operation.INSERT);
 			Integer id = MySQL.getMaxId("card");
 			return findById(id);
@@ -41,6 +44,7 @@ public class CardRepositoryImpl implements CardRepository {
 			sql = "INSERT INTO card (client_id, pin, account_id, last_withdrawal) VALUES ('" + card.getClient().getId()
 					+ "', '" + card.getPin() + "', '" + card.getAccount().getId() + "', '"
 					+ debitCard.getLastWithdrawal() + "');";
+			
 			MySQL.execute(sql, Operation.INSERT);
 			Integer id = MySQL.getMaxId("card");
 			return findById(id);
@@ -50,7 +54,6 @@ public class CardRepositoryImpl implements CardRepository {
 
 	@Override
 	public List<Card> findAll() {
-
 		String sql = "SELECT * FROM card;";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractList(rs);
@@ -58,7 +61,6 @@ public class CardRepositoryImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> findById(Integer id) {
-
 		String sql = "SELECT * FROM card WHERE id LIKE " + id + ";";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
@@ -66,7 +68,6 @@ public class CardRepositoryImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> findByClientId(Integer clientId) {
-
 		String sql = "SELECT * FROM card WHERE clientId LIKE " + clientId + ";";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
@@ -74,7 +75,6 @@ public class CardRepositoryImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> findByAccountId(Integer accountId) {
-
 		String sql = "SELECT * FROM card WHERE accountId LIKE " + accountId + ";";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
@@ -82,13 +82,11 @@ public class CardRepositoryImpl implements CardRepository {
 
 	@Override
 	public void deleteById(Integer id) {
-
 		String sql = "DELETE FROM card WHERE id LIKE '" + id + "';";
 		MySQL.execute(sql, Operation.DELETE);
 	}
 
 	private List<Card> extractList(ResultSet rs) {
-
 		List<Card> cards = new ArrayList<Card>();
 
 		try {
@@ -104,7 +102,6 @@ public class CardRepositoryImpl implements CardRepository {
 	}
 
 	private Optional<Card> extractObject(ResultSet rs) {
-
 		try {
 			if (rs.next()) {
 				Card card = buildObject(rs);
@@ -117,7 +114,6 @@ public class CardRepositoryImpl implements CardRepository {
 	}
 
 	private Card buildObject(ResultSet rs) throws SQLException {
-
 		Double plafond = rs.getDouble(5);
 
 		if (plafond != 0) {

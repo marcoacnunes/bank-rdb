@@ -16,39 +16,49 @@ public class AccountRepositoryImpl implements AccountRepository {
 	
 	@Override
 	public Optional<Account> save(Account account) {
-		
-		String query = "INSERT INTO account (nib, primary_owner_id, balance)"
+		if(account.getId() == null) {
+		String queryInsertAccount = "INSERT INTO account (nib, primary_owner_id, balance)"
 					+ " VALUES ('"	+ account.getNib() 						+ "', '" 
 									+ account.getPrimaryOwner().getId() 	+ "', '" 
 									+ account.getBalance() 					+ "');";
 		
-		MySQL.execute(query, Operation.INSERT);
+		MySQL.execute(queryInsertAccount, Operation.INSERT);
 		Integer id = MySQL.getMaxId("account");
-		return findById(id);
-	}
-	
-	@Override
-	public Optional<Client> saveSecondaryClient(Account account) {
 		
-		List<Client> secondaryClients = account.getSecondaryOwners();
-		Client client = new Client();
-		
-		if(!secondaryClients.isEmpty()) {
-			client = secondaryClients.get(secondaryClients.size() -1);
+		for (Client secondary : account.getSecondaryOwners()) {
+            String queryInsertAccountClient = "INSERT INTO account_client (account_id,client_id) VALUES ("
+					                    + "'" + id 					+ "',"
+					                    + "'" + secondary.getId() 	+ "');";
+            
+            MySQL.execute(queryInsertAccountClient, Operation.INSERT);
 		}
+		return findById(id);
 		
-		String query = "INSERT INTO account_client (account_id, client_id)"
-					+ " VALUES ('"	+ account.getId() 			+ "', '" 
-									+ client.getId() 			+ "');";
-		
-		MySQL.execute(query, Operation.INSERT);
-		
-		return Optional.of(client);
+		} else {
+			String queryUpdateAccount  = "UPDATE account SET "
+		                    + "nib = '"         + account.getNib()              	+ "',"
+		                    + "owner = '"       + account.getPrimaryOwner().getId() + "',"
+		                    + "balance = '"     + account.getBalance()          	+ "' "
+		                    + "WHERE id = " 	+ account.getId() 					+ ";";
+			
+            MySQL.execute(queryUpdateAccount, Operation.UPDATE);
+            
+            String queryDeleteAllAccountClients = "DELETE FROM account_client WHERE account_id = " + account.getId() + ";";
+            MySQL.execute(queryDeleteAllAccountClients, Operation.DELETE);
+            
+            for (Client secondary : account.getSecondaryOwners()) {
+                String queryInsertAccountClients = "INSERT INTO account_client (account_id, client_id) VALUES ("
+					                        + "'" + account.getId() 	+ "',"
+					                        + "'" + secondary.getId() 	+ "');";
+                
+                MySQL.execute(queryInsertAccountClients, Operation.INSERT);
+            }
+            return findById(account.getId());
+        }
 	}
 	
 	@Override
 	public List<Client> findSecondaryClients(Account account) {
-		
 		String query = "SELECT c.id, c.name, c.nif, c.password, c.date_of_birth, c.phone, c.mobile, c.email, c.occupation FROM account_client AS ac "
 			+	"JOIN client AS c ON ac.client_id = c.id "
 			+	"WHERE ac.account_id = " + account.getId() + ";";
@@ -66,7 +76,6 @@ public class AccountRepositoryImpl implements AccountRepository {
 	
 	@Override
 	public List<Account> findAll() {
-		
 		String sql = "SELECT * FROM account;";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractList(rs);
@@ -74,20 +83,16 @@ public class AccountRepositoryImpl implements AccountRepository {
 
 	@Override
 	public Optional<Account> findById(Integer id) {
-		
 		String sql = "Select * from account "
 				+ "INNER JOIN client ON account.primary_owner_id = client.id "
 				+ "where account.id = " + id + ";";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
-		
-		
 		
 		try {
 			if(rs.next()) {
 				Account account = new Account();
 				account.setId(rs.getInt(1));
 				account.setNib(rs.getString(2));
-				//rs.getInt(3) é igual ao id do client & rs.getInt(5)
 				account.setBalance(rs.getDouble(4));
 				Client primaryOwner = new Client();
 				primaryOwner.setId(rs.getInt(5));
@@ -100,20 +105,16 @@ public class AccountRepositoryImpl implements AccountRepository {
 				primaryOwner.setEmail(rs.getString(12));
 				primaryOwner.setOccupation(rs.getString(13));
 				account.setPrimaryOwner(primaryOwner);
-				
 				return Optional.of(account);
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return Optional.empty();
 	}
 
 	@Override
 	public Optional<Account> findByNib(String nib) {
-		
 		String sql = "SELECT * FROM account WHERE nib LIKE '" + nib + "';";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
@@ -121,13 +122,11 @@ public class AccountRepositoryImpl implements AccountRepository {
 
 	@Override
 	public void deleteById(Integer id) {
-		
 		String sql = "DELETE FROM account WHERE id LIKE '" + id + "';";
 		MySQL.execute(sql, Operation.DELETE);
 	}
 	
 	private List<Account> extractList(ResultSet rs) {
-		
 		List<Account> accounts = new ArrayList<Account>();
 		
 		try {
@@ -139,12 +138,10 @@ public class AccountRepositoryImpl implements AccountRepository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return Collections.emptyList();
 	}
 
 	private Optional<Account> extractObject(ResultSet rs) {
-
 		try {
 			if(rs.next()) {
 				Account account = buildObject(rs);
@@ -157,12 +154,9 @@ public class AccountRepositoryImpl implements AccountRepository {
 	}
 	
 	private Account buildObject(ResultSet rs) throws SQLException {
-		
 		Account account = new Account();
-		
 		account.setId(rs.getInt(1));
 		account.setNib(rs.getString(2));
-		
 		Client client = new Client();
 		client.setId(rs.getInt(3));
 		account.setPrimaryOwner(client);
@@ -173,7 +167,6 @@ public class AccountRepositoryImpl implements AccountRepository {
 
 	
 	private List<Client> extractClientsOfAccount(ResultSet rs) throws SQLException {
-		
 		List<Client> clients = new ArrayList<Client>();
 		
 		try {
@@ -189,21 +182,17 @@ public class AccountRepositoryImpl implements AccountRepository {
 	}
 
 	private Client buildClient(ResultSet rs) throws SQLException {
-		
 		Client client = new Client();
 		client.setId(rs.getInt(1));
 		client.setName(rs.getString(2));
 		client.setNif(rs.getString(3));
 		client.setPassword(rs.getString(4));
-		if(rs.getDate(5) != null) {
-			client.setDateOfBirth(rs.getDate(5).toLocalDate());
-		}
+		client.setDateOfBirth(rs.getDate(5).toLocalDate());
 		client.setPhone(rs.getString(6));
 		client.setMobile(rs.getString(7));
 		client.setEmail(rs.getString(8));
 		client.setOccupation(rs.getString(9));
 		return client;
 	}
-
 }
 

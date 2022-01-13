@@ -26,13 +26,11 @@ public class Atm {
 	}
 
 	public void run() {
-		
 		System.out.println("Type Client NIF: ");
 		String nif = scan.next();
 		
 		Client client = clientService.getByNif(nif);
 		System.out.println("Client Found!");
-		
 		int cardIdInput = 0;
 		
 		do {
@@ -51,12 +49,10 @@ public class Atm {
 			cardIdInput = scan.nextInt();
 	
 			if(creditCard != null && cardIdInput == creditCard.getId()) {
-				
 				atmService.checkCardPin(creditCard);
 				showAtmMenu(creditCard, client);
 					
 			}else if(debitCard != null && cardIdInput == debitCard.getId()) {
-			
 				atmService.checkCardPin(debitCard);
 				showAtmMenu(debitCard, client);
 			}
@@ -64,7 +60,6 @@ public class Atm {
 	}
 
 	private void showAtmMenu(Card card, Client client) {
-		
 		int choice = 0;
 		
 		do {
@@ -76,14 +71,12 @@ public class Atm {
 			System.out.println("5. Check Transaction History");
 			
 			CreditCard creditCard = null;
-			
 			if(card.getClass().equals(CreditCard.class)) {		//needs better solution
 				creditCard = (CreditCard) card;
 				System.out.println("6. Pay Plafond");
 				System.out.println("7. Check Plafond Available");
 			}
 			System.out.println("Select an option: ");
-	
 			choice = scan.nextInt();
 	
 			Account account = accountService.getById(card.getAccount().getId());
@@ -117,7 +110,6 @@ public class Atm {
 	}
 	
 	public void transfers(Account account, Client client){
-		
 		int choice = 0;
 		
 		do {
@@ -141,21 +133,17 @@ public class Atm {
 	}
 
 	private void transactionsHistory(Account account) {
-		
 		account.getTransactions().forEach(System.out::println);
 	}
 	
 	private void plafond(CreditCard creditCard, Account account, Client client) {
-		
 		System.out.println("Type value to pay Plafond: ");
 		Double valueInputPlafond = scan.nextDouble();
 		atmService.payPlafond(account, creditCard, valueInputPlafond);
 	}
 	
 	public void transferBetweenAccounts(Account account, Client client) {
-		
 		for (Account thisAccount : accountService.getAll()) {
-			
 			if(thisAccount.getPrimaryOwner().getId().equals(client.getId())){
 				System.out.println("ID: " + thisAccount.getId() + " NIB: " + thisAccount.getNib());
 			}
@@ -163,16 +151,13 @@ public class Atm {
 		
 		System.out.println("\nType the Account ID that you wish to transfer: ");
 		int id = scan.nextInt();
-		
 		Account receivingAccount = accountService.getById(id);
 		atmService.transfer(account, receivingAccount);
 	}
 	
 	public void transferToDiferentAccount(Account account, Client client){
-
 		System.out.println("Type Account NIB number to transfer value");
 		String nib = scan.next();
-
 		Account receivingAccount = accountService.getByNib(nib);
 		atmService.transfer(account, receivingAccount);
 	}

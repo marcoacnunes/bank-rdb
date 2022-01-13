@@ -9,8 +9,6 @@ public interface AccountService {
  
     Account save(Account account);
     
-    Client saveSecondaryClient(Account account);
-    
     List<Client> getSecondaryClients(Account account);
     	
     List<Account> getAll();
@@ -20,5 +18,4 @@ public interface AccountService {
     Account getByNib(String nib);
 
     void deleteById(Integer id);
-
 }

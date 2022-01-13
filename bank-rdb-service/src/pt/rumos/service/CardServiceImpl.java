@@ -15,17 +15,14 @@ public class CardServiceImpl implements CardService {
 
 	@Override
 	public Card save(Card card) {
-		
 		Integer cardClientId = card.getClient().getId();
 		Integer cardAccountId = card.getAccount().getId();
 		int creditCardCounter = 0;
 		int debitCardCounter = 0;
 		
 		for (Card existingCard : cardRepository.findAll()) {
-			
 			if(existingCard.getClass().equals(CreditCard.class) && existingCard.getClient().getId().equals(cardClientId)) {
 				creditCardCounter += 1;
-				
 			}else if(existingCard.getClass().equals(DebitCard.class) && existingCard.getClient().getId().equals(cardClientId)) {
 				debitCardCounter += 1;
 			}
@@ -35,7 +32,6 @@ public class CardServiceImpl implements CardService {
 		if(debitCardCounter == 1) throw new ServiceException("Sorry! Not processed! The bank only allows 1 Debit Card per Client.");
 		
 		for (Card existingCard : cardRepository.findAll()) {
-			
 			if(existingCard.getClass().equals(CreditCard.class) && existingCard.getAccount().getId().equals(cardAccountId)) {
 				creditCardCounter += 1;
 				
@@ -74,5 +70,4 @@ public class CardServiceImpl implements CardService {
 	public void deleteById(Integer id) {
 		cardRepository.deleteById(id);
 	}
-
 }
