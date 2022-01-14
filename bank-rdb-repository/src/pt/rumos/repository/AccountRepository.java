@@ -10,7 +10,7 @@ public interface AccountRepository {
 
     Optional<Account> save(Account account);
     
-    List<Client> findSecondaryClients(Account account);
+    List<Client> findSecondaryClients(Integer id);
 
     List<Account> findAll();
 

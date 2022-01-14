@@ -56,7 +56,7 @@ public class Account {
 		return secondaryOwners;
 	}
 
-	public void setSecondaryOwners(ArrayList<Client> secondaryOwners) {
+	public void setSecondaryOwners(List<Client> secondaryOwners) {
 		this.secondaryOwners = secondaryOwners;
 	}
 

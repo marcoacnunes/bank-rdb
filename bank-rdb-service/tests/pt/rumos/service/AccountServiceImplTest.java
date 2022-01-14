@@ -1,12 +1,11 @@
 package pt.rumos.service;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
 
 import org.junit.Test;
 
+import pt.rumos.exception.ServiceException;
 import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 
@@ -24,6 +23,7 @@ public class AccountServiceImplTest {
 //		account.setPrimaryOwner(client);
 //		
 //		Account savedAccount = accountService.save(account);
+//		
 //		assertTrue(savedAccount.getNib() != null);
 //		assertTrue(savedAccount.getId() != null);
 //	}
@@ -38,50 +38,70 @@ public class AccountServiceImplTest {
 //	}
 	
 //	@Test
-//	public void testSave_invalidAccount() {
+//	public void testSave_UpdateAccount() {
 //		
 //		Account account = new Account();
 //		Client client = new Client();
+//		client.setId(32);
 //		account.setPrimaryOwner(client);
+//		account.setId(23);
+//		account.setBalance(200.00);
 //		
-//		ServiceException exception = assertThrows(ServiceException.class, () -> {
-//	       accountService.save(account);
-//	    });
-//		assertEquals("There was a problem while saving Account.", exception.getMessage());
-//	
+//		Account savedAccount = accountService.save(account);
+//		
+//		assertTrue(savedAccount.getBalance() == 200.00);
 //	}
 
 //	@Test
-//	public void testSaveSecondaryClient() {
+//	public void testSave_SecondaryClientLimit() {
+//		//Limit number of Secondary Clients is 4
+//		Account account = new Account();
+//		account.setId(22);
+//		Client primaryClient = new Client();
+//		primaryClient.setId(33);
+//		account.setPrimaryOwner(primaryClient);
+//		Client secondaryClient1 = new Client();
+//		secondaryClient1.setId(33);
+//		account.getSecondaryOwners().add(secondaryClient1);
+//		Client secondaryClient2 = new Client();
+//		secondaryClient2.setId(35);
+//		account.getSecondaryOwners().add(secondaryClient2);
+//		Client secondaryClient3 = new Client();
+//		secondaryClient3.setId(36);
+//		account.getSecondaryOwners().add(secondaryClient3);
+//		Client secondaryClient4 = new Client();
+//		secondaryClient4.setId(37);
+//		account.getSecondaryOwners().add(secondaryClient4);
+//		Client secondaryClient5 = new Client();
+//		secondaryClient5.setId(41);
+//		account.getSecondaryOwners().add(secondaryClient5);
+//
 //		
-//		Client client = new Client();
-//		client.setId(33);
-//		Account secondaryClientAccount = new Account();
-//		secondaryClientAccount.setId(22);
-//		secondaryClientAccount.getSecondaryOwners().add(client);
+//		ServiceException exception = assertThrows(ServiceException.class, () -> {
+//			Account savedAccount = accountService.save(account);
+//		});
 //		
-//		secondaryClientAccount = accountService.saveSecondaryClient(secondaryClientAccount);
-//		assertEquals("Limit Number of Secondary Clients of this Account has been reached!", exception.getMessage());
-//		assertTrue(secondaryClientAccount.getId() == 22);
-//		
+//		assertEquals("Limit Number of Secondary Clients has been reached.", exception.getMessage());
 //	}
 	
 //	@Test
-//	public void testSaveSecondaryClient() {
+//	public void testSave_SecondaryClient() {
 //		
-//		Client client = new Client();
-//		client.setId(33);
-//		final Account savedSecondary = new Account();
-//		savedSecondary.setId(22);
-//		savedSecondary.getSecondaryOwners().add(client);
+//		Account account = new Account();
+//		account.setId(23);
+//		Client primaryClient = new Client();
+//		primaryClient.setId(32);
+//		primaryClient.setName("JunitTestSecondary");
+//		account.setPrimaryOwner(primaryClient);
+//		Client secondaryClient = new Client();
+//		secondaryClient.setId(41);
+//		account.getSecondaryOwners().add(secondaryClient);
 //		
-//		savedSecondary = accountService.saveSecondaryClient(savedSecondary);
+//		Account savedAccountWithSecondaryClient = accountService.save(account);
 //		
-//		assertEquals("Limit Number of Secondary Clients of this Account has been reached!", exception.getMessage());
-//		assertTrue(savedSecondary.getId() == 22);
-//		
+//		assertTrue(account.getSecondaryOwners().size() > 0);
 //	}
-//
+
 //	@Test
 //	public void testGetAccountClients_NotEmpty() {
 //

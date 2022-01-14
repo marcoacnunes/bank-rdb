@@ -17,51 +17,52 @@ public class AccountRepositoryImpl implements AccountRepository {
 	@Override
 	public Optional<Account> save(Account account) {
 		if(account.getId() == null) {
-		String queryInsertAccount = "INSERT INTO account (nib, primary_owner_id, balance)"
-					+ " VALUES ('"	+ account.getNib() 						+ "', '" 
-									+ account.getPrimaryOwner().getId() 	+ "', '" 
-									+ account.getBalance() 					+ "');";
-		
-		MySQL.execute(queryInsertAccount, Operation.INSERT);
-		Integer id = MySQL.getMaxId("account");
-		
-		for (Client secondary : account.getSecondaryOwners()) {
-            String queryInsertAccountClient = "INSERT INTO account_client (account_id,client_id) VALUES ("
-					                    + "'" + id 					+ "',"
-					                    + "'" + secondary.getId() 	+ "');";
-            
-            MySQL.execute(queryInsertAccountClient, Operation.INSERT);
-		}
-		return findById(id);
+			String queryInsertAccount = "INSERT INTO account (nib, primary_owner_id, balance)"
+						+ " VALUES ('"	+ account.getNib() 						+ "', '" 
+										+ account.getPrimaryOwner().getId() 	+ "', '" 
+										+ account.getBalance() 					+ "');";
+			
+			MySQL.execute(queryInsertAccount, Operation.INSERT);
+			Integer id = MySQL.getMaxId("account");
+			
+			for (Client secondary : account.getSecondaryOwners()) {
+	            String queryInsertAccountClient = "INSERT INTO account_client (account_id, client_id) VALUES ("
+						                    + "'" + id 					+ "',"
+						                    + "'" + secondary.getId() 	+ "');";
+	            
+	            MySQL.execute(queryInsertAccountClient, Operation.INSERT);
+			}
+			return findById(id);
 		
 		} else {
 			String queryUpdateAccount  = "UPDATE account SET "
-		                    + "nib = '"         + account.getNib()              	+ "',"
-		                    + "owner = '"       + account.getPrimaryOwner().getId() + "',"
-		                    + "balance = '"     + account.getBalance()          	+ "' "
-		                    + "WHERE id = " 	+ account.getId() 					+ ";";
+		                    + "nib = '"         		+ account.getNib()              	+ "',"
+		                    + "primary_owner_id = '"    + account.getPrimaryOwner().getId() + "',"
+		                    + "balance = '"     		+ account.getBalance()          	+ "' "
+		                    + "WHERE id = " 			+ account.getId() 					+ ";";
 			
             MySQL.execute(queryUpdateAccount, Operation.UPDATE);
+            Integer id = MySQL.getMaxId("account");
             
             String queryDeleteAllAccountClients = "DELETE FROM account_client WHERE account_id = " + account.getId() + ";";
             MySQL.execute(queryDeleteAllAccountClients, Operation.DELETE);
             
             for (Client secondary : account.getSecondaryOwners()) {
-                String queryInsertAccountClients = "INSERT INTO account_client (account_id, client_id) VALUES ("
-					                        + "'" + account.getId() 	+ "',"
-					                        + "'" + secondary.getId() 	+ "');";
+                String queryUpdateAccountClients = "INSERT INTO account_client (account_id, client_id) VALUES ("
+							                        + "'" + account.getId() 	+ "',"
+							                        + "'" + secondary.getId() 	+ "');";
                 
-                MySQL.execute(queryInsertAccountClients, Operation.INSERT);
+                MySQL.execute(queryUpdateAccountClients, Operation.INSERT);
             }
-            return findById(account.getId());
+            return findById(id);
         }
 	}
 	
 	@Override
-	public List<Client> findSecondaryClients(Account account) {
+	public List<Client> findSecondaryClients(Integer accountId) {
 		String query = "SELECT c.id, c.name, c.nif, c.password, c.date_of_birth, c.phone, c.mobile, c.email, c.occupation FROM account_client AS ac "
 			+	"JOIN client AS c ON ac.client_id = c.id "
-			+	"WHERE ac.account_id = " + account.getId() + ";";
+			+	"WHERE ac.account_id = " + accountId + ";";
 		
 		ResultSet rs = MySQL.execute(query, Operation.SELECT);
 		
@@ -70,7 +71,6 @@ public class AccountRepositoryImpl implements AccountRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return Collections.emptyList();
 	}
 	
@@ -105,6 +105,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 				primaryOwner.setEmail(rs.getString(12));
 				primaryOwner.setOccupation(rs.getString(13));
 				account.setPrimaryOwner(primaryOwner);
+				account.setSecondaryOwners(findSecondaryClients(id));
 				return Optional.of(account);
 			}
 		} catch (Exception e) {
@@ -163,8 +164,6 @@ public class AccountRepositoryImpl implements AccountRepository {
 		account.setBalance(rs.getDouble(4));
 		return account;
 	}
-	
-
 	
 	private List<Client> extractClientsOfAccount(ResultSet rs) throws SQLException {
 		List<Client> clients = new ArrayList<Client>();

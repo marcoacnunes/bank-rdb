@@ -16,15 +16,17 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public Account save(Account account) {
-		if(account.getId() == null) {
+//		if(account.getId() == null) {
 			account.setNib(generateAndCheckIfUniqueNib());
-		}
+//		}
+			
+		if(account.getSecondaryOwners().size() > 4) throw new ServiceException("Limit Number of Secondary Clients has been reached.");
 		return accountRepository.save(account).orElseThrow(() -> new ServiceException("There was a problem while saving Account."));
 	}
 	
     @Override
-    public List<Client> getSecondaryClients(Account account) {
-    	return accountRepository.findSecondaryClients(account);
+    public List<Client> getSecondaryClients(Integer accountId) {
+    	return accountRepository.findSecondaryClients(accountId);
     }
 	
 	@Override

@@ -9,7 +9,7 @@ public interface AccountService {
  
     Account save(Account account);
     
-    List<Client> getSecondaryClients(Account account);
+    List<Client> getSecondaryClients(Integer accountId);
     	
     List<Account> getAll();
 

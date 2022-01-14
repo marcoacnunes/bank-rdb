@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import pt.rumos.database.MySQL;
-import pt.rumos.database.Operation;
 import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 
@@ -27,9 +25,9 @@ public class AccountRepositoryListImpl implements AccountRepository {
 		return Optional.of(account);
 		
     	} else {
-    		for (Client secondary : account.getSecondaryOwners()) {
-                ///////////
-    		}
+//    		for (Client secondary : account.getSecondaryOwners()) {
+//                ///////////
+//    		}
     		return findById(id);
     	}
     }
@@ -85,8 +83,8 @@ public class AccountRepositoryListImpl implements AccountRepository {
     }
 
     @Override
-	public List<Client> findSecondaryClients(Account account) {
-		return account.getSecondaryOwners(); 
+	public List<Client> findSecondaryClients(Integer accountId) {
+		return null; //account.getSecondaryOwners(); 
 	}
 }
 
