@@ -244,7 +244,7 @@ public class Management {
 		System.out.println("Type Account ID: ");
 		int input = scan.nextInt();
 		Account account = accountService.getById(input);
-		accountService.getSecondaryClients(account).forEach(System.out::println);
+		accountService.getSecondaryClients(account.getId()).forEach(System.out::println);
 	}
 
 	private void cardManagement() {
