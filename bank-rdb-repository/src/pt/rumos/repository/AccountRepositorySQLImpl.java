@@ -12,7 +12,7 @@ import pt.rumos.database.Operation;
 import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 
-public class AccountRepositoryImpl implements AccountRepository {
+public class AccountRepositorySQLImpl implements AccountRepository {
 	
 	@Override
 	public Optional<Account> save(Account account) {

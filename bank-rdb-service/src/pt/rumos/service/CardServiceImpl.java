@@ -7,11 +7,11 @@ import pt.rumos.model.Card;
 import pt.rumos.model.CreditCard;
 import pt.rumos.model.DebitCard;
 import pt.rumos.repository.CardRepository;
-import pt.rumos.repository.CardRepositoryImpl;
+import pt.rumos.repository.CardRepositorySQLImpl;
 
 public class CardServiceImpl implements CardService {
 	
-	private CardRepository cardRepository = new CardRepositoryImpl();
+	private CardRepository cardRepository = new CardRepositorySQLImpl();
 
 	@Override
 	public Card save(Card card) {
@@ -68,6 +68,7 @@ public class CardServiceImpl implements CardService {
 
 	@Override
 	public void deleteById(Integer id) {
+		getById(id);
 		cardRepository.deleteById(id);
 	}
 }

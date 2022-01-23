@@ -8,17 +8,17 @@ import pt.rumos.exception.ServiceException;
 import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 import pt.rumos.repository.AccountRepository;
-import pt.rumos.repository.AccountRepositoryImpl;
+import pt.rumos.repository.AccountRepositorySQLImpl;
 
 public class AccountServiceImpl implements AccountService{
 	
-	AccountRepository accountRepository = new AccountRepositoryImpl();
+	AccountRepository accountRepository = new AccountRepositorySQLImpl();
 
 	@Override
 	public Account save(Account account) {
-//		if(account.getId() == null) {
+		if(account.getId() == null) {
 			account.setNib(generateAndCheckIfUniqueNib());
-//		}
+		}
 			
 		if(account.getSecondaryOwners().size() > 4) throw new ServiceException("Limit Number of Secondary Clients has been reached.");
 		return accountRepository.save(account).orElseThrow(() -> new ServiceException("There was a problem while saving Account."));

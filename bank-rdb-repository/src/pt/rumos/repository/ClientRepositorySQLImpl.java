@@ -12,7 +12,7 @@ import pt.rumos.database.MySQL;
 import pt.rumos.database.Operation;
 import pt.rumos.model.Client;
 
-public class ClientRepositoryImpl implements ClientRepository {
+public class ClientRepositorySQLImpl implements ClientRepository {
 	
 	@Override
 	public Optional<Client> save(Client client) {

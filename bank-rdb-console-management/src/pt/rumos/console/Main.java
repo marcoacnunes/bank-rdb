@@ -1,6 +1,7 @@
 package pt.rumos.console;
 
 import java.util.Scanner;
+
 import pt.rumos.service.AccountService;
 import pt.rumos.service.AccountServiceImpl;
 import pt.rumos.service.AtmService;

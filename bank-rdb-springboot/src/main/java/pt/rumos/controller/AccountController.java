@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import pt.rumos.model.Account;
-import pt.rumos.model.Client;
 import pt.rumos.service.AccountService;
 import pt.rumos.service.AccountServiceImpl;
 

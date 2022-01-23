@@ -15,7 +15,7 @@ import pt.rumos.model.Client;
 import pt.rumos.model.CreditCard;
 import pt.rumos.model.DebitCard;
 
-public class CardRepositoryImpl implements CardRepository {
+public class CardRepositorySQLImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> save(Card card) {
@@ -42,8 +42,8 @@ public class CardRepositoryImpl implements CardRepository {
 
 			debitCard = (DebitCard) card;
 			sql = "INSERT INTO card (client_id, pin, account_id, last_withdrawal) VALUES ('" + card.getClient().getId()
-					+ "', '" + card.getPin() + "', '" + card.getAccount().getId() + "', '"
-					+ debitCard.getLastWithdrawal() + "');";
+												+ "', '" + card.getPin() + "', '" + card.getAccount().getId() + "', '"
+												+ debitCard.getLastWithdrawal() + "');";
 			
 			MySQL.execute(sql, Operation.INSERT);
 			Integer id = MySQL.getMaxId("card");

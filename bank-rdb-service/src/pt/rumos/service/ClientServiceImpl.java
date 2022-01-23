@@ -5,11 +5,11 @@ import java.util.List;
 import pt.rumos.exception.ServiceException;
 import pt.rumos.model.Client;
 import pt.rumos.repository.ClientRepository;
-import pt.rumos.repository.ClientRepositoryImpl;
+import pt.rumos.repository.ClientRepositorySQLImpl;
 
 public class ClientServiceImpl implements ClientService {
 
-    private ClientRepository clientRepository = new ClientRepositoryImpl();
+    private ClientRepository clientRepository = new ClientRepositorySQLImpl();
 
     @Override
     public Client save(Client client) {
@@ -42,6 +42,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteByNif(String nif) {
+    	getByNif(nif);
     	clientRepository.deleteByNif(nif);
     }
 }
