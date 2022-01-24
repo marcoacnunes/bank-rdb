@@ -19,6 +19,15 @@ public class CardRepositorySQLImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> save(Card card) {
+		
+		if(card.getId() != null) {
+			return saveCard(card);
+		} else {
+			return updateCard(card);
+		}
+	}
+
+	public Optional<Card> saveCard(Card card) {
 		CreditCard creditCard = null;
 		DebitCard debitCard = null;
 		String sql = null;
@@ -41,9 +50,10 @@ public class CardRepositorySQLImpl implements CardRepository {
 		if (card.getClass().equals(DebitCard.class)) {
 
 			debitCard = (DebitCard) card;
-			sql = "INSERT INTO card (client_id, pin, account_id, last_withdrawal) VALUES ('" + card.getClient().getId()
-												+ "', '" + card.getPin() + "', '" + card.getAccount().getId() + "', '"
-												+ debitCard.getLastWithdrawal() + "');";
+			sql = "INSERT INTO card (client_id, pin, account_id, last_withdrawal) VALUES ('" + card.getClient().getId() 	+ "', '" 
+																							+ card.getPin() 				+ "', '" 
+																							+ card.getAccount().getId() 	+ "', '"
+																							+ debitCard.getLastWithdrawal() + "');";
 			
 			MySQL.execute(sql, Operation.INSERT);
 			Integer id = MySQL.getMaxId("card");
@@ -51,6 +61,43 @@ public class CardRepositorySQLImpl implements CardRepository {
 		}
 		return Optional.empty();
 	}
+	
+	public Optional<Card> updateCard(Card card) {
+		CreditCard creditCard = null;
+		DebitCard debitCard = null;
+		String sql = null;
+
+		if (card.getClass().equals(CreditCard.class)) {
+
+			creditCard = (CreditCard) card;
+			sql = "UPDATE card SET client_id ='" 			+ card.getClient().getId() 			+ "', "
+								+ "pin ='" 					+ card.getPin() 		   			+ "', "
+								+ "account_id ='" 			+ card.getAccount().getId() 		+ "', "
+								+ "plafond ='" 				+ creditCard.getPlafond() 			+ "', "
+								+ "daily_withdrawals ='" 	+ creditCard.getDailyWithdrawals() 	+ "' "
+								+ "WHERE id = " 			+ card.getId() + ";";
+			
+			MySQL.execute(sql, Operation.INSERT);
+			Integer id = MySQL.getMaxId("card");
+			return findById(id);
+		}
+
+		if (card.getClass().equals(DebitCard.class)) {
+
+			debitCard = (DebitCard) card;
+			sql = "UPDATE card SET client_id ='" + card.getClient().getId() 		+ "', "
+					+ "pin ='" 					+ card.getPin() 		   			+ "', "
+					+ "account_id ='" 			+ card.getAccount().getId() 		+ "', "
+					+ "daily_withdrawals ='" 	+ debitCard.getLastWithdrawal() 	+ "' "
+					+ "WHERE id = " 			+ card.getId() + ";";
+			
+			MySQL.execute(sql, Operation.INSERT);
+			Integer id = MySQL.getMaxId("card");
+			return findById(id);
+		}
+		return Optional.empty();
+	}
+	
 
 	@Override
 	public List<Card> findAll() {

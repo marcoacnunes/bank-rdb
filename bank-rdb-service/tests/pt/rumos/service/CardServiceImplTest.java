@@ -9,7 +9,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import pt.rumos.exception.ServiceException;
+import pt.rumos.model.Account;
 import pt.rumos.model.Card;
+import pt.rumos.model.Client;
+import pt.rumos.model.CreditCard;
 
 class CardServiceImplTest {
 	
@@ -17,7 +20,14 @@ class CardServiceImplTest {
 
 	@Test
 	public void testSave_SaveCard() {
-
+		Client client = new Client();
+		client.setId(32);
+		Account account = new Account();
+		account.setId(13);
+		CreditCard creditCard = new CreditCard();
+		creditCard.setClient(client);
+		
+		
 	}
 	
 	@Test
