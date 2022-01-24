@@ -11,7 +11,7 @@ In this repository you will find the following:
 * bank-rdb-model:
 **This Module contains the model layer of the Application. Attention: the toString() is Overridden.**
 * bank-rdb-repository:
-**This Module is responsible for storing in a persistent manner the data used by the Service using MySql as DataBase.**
+**This Module is responsible for storing in a persistent manner the data used by the Service using MySQL as DataBase.**
 * bank-rdb-service:
 **This Module is responsible for business logic.**
 * bank-rdb-springboot:
