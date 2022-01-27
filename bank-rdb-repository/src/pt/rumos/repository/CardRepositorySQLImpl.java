@@ -20,7 +20,7 @@ public class CardRepositorySQLImpl implements CardRepository {
 	@Override
 	public Optional<Card> save(Card card) {
 		
-		if(card.getId() != null) {
+		if(card.getId() == null) {
 			return saveCard(card);
 		} else {
 			return updateCard(card);
@@ -115,7 +115,7 @@ public class CardRepositorySQLImpl implements CardRepository {
 
 	@Override
 	public Optional<Card> findByClientId(Integer clientId) {
-		String sql = "SELECT * FROM card WHERE clientId LIKE " + clientId + ";";
+		String sql = "SELECT * FROM card WHERE client_id LIKE " + clientId + ";";
 		ResultSet rs = MySQL.execute(sql, Operation.SELECT);
 		return extractObject(rs);
 	}
