@@ -9,7 +9,6 @@ import pt.rumos.exception.ServiceException;
 import pt.rumos.model.Account;
 import pt.rumos.model.Client;
 import pt.rumos.model.CreditCard;
-import pt.rumos.model.DebitCard;
 
 class CardServiceImplTest {
 	
@@ -35,7 +34,7 @@ class CardServiceImplTest {
 //		Client client = new Client();
 //		client.setId(32);
 //		Account account = new Account();
-//		account.setId(13);
+//		account.setId(13); 
 //		DebitCard debitCard = new DebitCard();
 //		debitCard.setClient(client);
 //		debitCard.setAccount(account);
@@ -47,9 +46,9 @@ class CardServiceImplTest {
 //	
 //	@Test
 //	public void testSave_ClientWith2CreditCards() {
-//		//Maximum of 1 Credit Card per Client
-//		Client client = new Client();
-//		client.setId(32); //Client already has credit Card
+//													//Limit of 1 Credit Card per Client			
+//		Client client = new Client();				//Client already has 1 credit Card
+//		client.setId(32); 							
 //		Account account = new Account();
 //		account.setId(13);
 //		CreditCard creditCard = new CreditCard();
@@ -65,9 +64,9 @@ class CardServiceImplTest {
 //	
 //	@Test
 //	public void testSave_ClientWith2DebitCards() {
-//		//Maximum of 1 Debit Card per Client
-//		Client client = new Client();
-//		client.setId(33); //Client already has debit Card
+//													//Limit of 1 Debit Card per Client
+//		Client client = new Client();				//Client already has 1 debit Card
+//		client.setId(33); 						
 //		Account account = new Account();
 //		account.setId(12);
 //		DebitCard debitCard = new DebitCard();
@@ -80,16 +79,41 @@ class CardServiceImplTest {
 //	
 //		assertEquals("Sorry! Not processed! The bank only allows 1 Debit Card per Client.", exception.getMessage());
 //	}
-	
-	@Test
-	public void testSave_AccountWith3CreditCards() {
-		Maximum of 2 Credit Cards per Account
-	}
 //	
 //	@Test
-//	public void testSave_AccountWith5DebitCards() {
-//		//Maximum of 4 Debit Cards per Account
+//	public void testSave_AccountWith3CreditCards() {
+//		Account account = new Account();					//Limit of 2 Credit Cards per Account
+//		account.setId(12);									//Account already has 2 credit Cards
+//		Client client = new Client();						
+//		client.setId(44);
+//		CreditCard creditCard = new CreditCard();
+//		creditCard.setClient(client);
+//		creditCard.setAccount(account);
+//		
+//		ServiceException exception = assertThrows(ServiceException.class, () -> {
+//			cardService.save(creditCard);
+//	    });
+//	
+//		assertEquals("Sorry! Not processed! The bank only allows 2 Credit Card per Account.", exception.getMessage());
+//		
 //	}
+//	
+	@Test
+	public void testSave_AccountWith5DebitCards() {
+		Account account = new Account();					//Limit of 4 Debit Cards per Account
+		account.setId(12);									//Account already has 4 credit Cards
+		Client client = new Client();						
+		client.setId(44);
+		CreditCard creditCard = new CreditCard();
+		creditCard.setClient(client);
+		creditCard.setAccount(account);
+		
+		ServiceException exception = assertThrows(ServiceException.class, () -> {
+			cardService.save(creditCard);
+	    });
+	
+		assertEquals("Sorry! Not processed! The bank only allows 2 Credit Card per Account.", exception.getMessage());
+	}
 //	
 //	//*****
 //
